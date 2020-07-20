@@ -1,0 +1,171 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Sales
+@using DigoErp.Service.Enums
+@{
+    ViewBag.Title = RevenueRes.Revenues;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Sales</a></li>
+        <li class="breadcrumb-item active">@RevenueRes.Revenues</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@RevenueRes.Revenues</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@RevenueRes.Revenues</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("create", "Revenues",new {area ="Sales"})">@RevenueRes.AddNew</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="revenueDataTable" class="table table-striped table-bordered table-td-valign-middle"></table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+<script src="~/Scripts/moment.js"></script>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var revenueTable = $("#revenueDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url":appUrl+ "Sales/Revenues/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (revenueTable === "" ? 0 : revenueTable.page.info().page) + 1;
+                        d.RowsPerPage = revenueTable === "" ? 10 : revenueTable.page.info().length;
+                        d.SortByColumn = revenueTable === "" ? 2 : revenueTable.order()[0][0];
+                        d.SortDir = revenueTable === "" ? "asc" : revenueTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@RevenueRes.Date", "data": "Date",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@RevenueRes.Amount", "data": "Amount",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null) {
+                                return "";
+                            } else {
+                                if (full.SymbolPosition === '@SymbolPosition.BeforeAmount') {
+                                    return full.CurrencySymbol + " " + data;
+                                } else {
+                                    return data + " " +full.CurrencySymbol;
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "title": "@RevenueRes.Customer", "data": "CustomerName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@RevenueRes.Category", "data": "CategoryName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@RevenueRes.Account", "data": "AccountName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-revenueId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-revenueId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            revenueTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var revenueId = $(this).attr("data-revenueId");
+                window.location.href = appUrl + "sales/revenues/create?id=" + revenueId;
+            });
+
+            revenueTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var revenueId = $(this).attr("data-revenueId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Sales/Revenues/Delete",
+                            "type": "POST",
+                            "data": { revenueId: revenueId },
+                            success: function (response) {
+                                if (response.StatusCode == 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        revenueTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        revenueTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

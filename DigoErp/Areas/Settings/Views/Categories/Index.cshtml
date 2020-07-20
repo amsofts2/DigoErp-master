@@ -1,0 +1,152 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Settings.Category
+@{
+    ViewBag.Title = CategoryRes.Category;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@CategoryRes.Category</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@CategoryRes.Category</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@CategoryRes.Category</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("create", "Categories",new {area ="Settings"})">@CategoryRes.NewCategory</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="categoryDataTable" class="table table-striped table-bordered table-td-valign-middle">
+            </table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var categoryTable = $("#categoryDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": appUrl+ "Settings/Categories/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (categoryTable === "" ? 0 : categoryTable.page.info().page) + 1;
+                        d.RowsPerPage = categoryTable === "" ? 10 : categoryTable.page.info().length;
+                        d.SortByColumn = categoryTable === "" ? 2 : categoryTable.order()[0][0];
+                        d.SortDir = categoryTable === "" ? "asc" : categoryTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@CategoryRes.Name", "data": "Name"
+                    },
+                    {
+                        "title": "@CategoryRes.Type", "data": "TypeName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@CategoryRes.Color", "data": "Color",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return ''
+                            return '<td class="col-md-2  col-lg-2 d-none d-md-block"><i class="fa fa-2x fa-circle" style="color:'+ data +';"></i></td>';
+                        }
+                    },
+                    {
+                        "title": "@CategoryRes.Enabled", "data": "Enabled",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-categoryId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-categoryId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            categoryTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var categoryId = $(this).attr("data-categoryId");
+                window.location.href = appUrl + "settings/categories/create/" + categoryId;
+            });
+
+            categoryTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var categoryId = $(this).attr("data-categoryId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Settings/Categories/Delete",
+                            "type": "POST",
+                            "data": { categoryId: categoryId },
+                            success: function (response) {
+                                if (response.StatusCode === 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        categoryTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        categoryTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

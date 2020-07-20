@@ -1,0 +1,90 @@
+﻿@using DigoErp.Resources.App_Resources
+@model DigoErp.Service.Models.Branch
+@{
+    ViewBag.Title = ViewBag.id > 0 ? BranchRes.EditBranch : BranchRes.Newbranch;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="BranchController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@BranchRes.Branches</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="branchForm" id="branchForm" data-parsley-validate="true" ng-submit="vm.saveForm()">
+                        <input type="hidden" name="branchId" id="branchId" ng-model="vm.Id" value="@(ViewBag.id > 0 ? ViewBag.id : 0)"/>
+                        <input type="hidden" name="Logo" id="Logo" ng-model="vm.Logo"/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Name">@BranchRes.Name</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Name" name="Name" ng-model="vm.Name" placeholder="@BranchRes.Entername">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Email">@BranchRes.Email</label>
+                                    <input type="email" data-parsley-required="true" class="form-control m-b-5" id="Email" name="Email" ng-model="vm.Email" placeholder="@BranchRes.EnterEmail">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="TaxNumber">@BranchRes.TaxNumber</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="TaxNumber" ng-model="vm.TaxNumber" placeholder="@BranchRes.EnterTaxNumber">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Phone">@BranchRes.Phone</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Phone" name="Phone" ng-model="vm.Phone" placeholder="@BranchRes.EnterPhone">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Address">@BranchRes.Address</label>
+                                    <textarea rows="6" class="form-control m-b-5" id="Address" name="Address" ng-model="vm.Address" placeholder="@BranchRes.Enteraddress"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="file">@BranchRes.Logo</label>
+                                    <input type="file" select-files-ng ng-model="fileArray" class="form-control m-b-5" id="file">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+    <script src="~/Scripts/Controllers/branchController.js"></script>
+}

@@ -1,0 +1,142 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Role
+@{
+    ViewBag.Title = RoleRes.Roles;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@RoleRes.Roles</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@RoleRes.Roles</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@RoleRes.Roles</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("create", "Roles",new {area ="Auth"})">@RoleRes.AddNew</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="roleDataTable" class="table table-striped table-bordered table-td-valign-middle"></table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+<script src="~/Scripts/moment.js"></script>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var roleTable = $("#roleDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url":appUrl+ "Auth/Roles/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (roleTable === "" ? 0 : roleTable.page.info().page) + 1;
+                        d.RowsPerPage = roleTable === "" ? 10 : roleTable.page.info().length;
+                        d.SortByColumn = roleTable === "" ? 2 : roleTable.order()[0][0];
+                        d.SortDir = roleTable === "" ? "asc" : roleTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@RoleRes.Name", "data": "Name"
+                    },
+                    {
+                        "title": "@RoleRes.Code", "data": "Code",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@RoleRes.Description", "data": "Description",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-roleId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-roleId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            roleTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var roleId = $(this).attr("data-roleId");
+                window.location.href = appUrl + "auth/roles/create/" + roleId;
+            });
+
+            roleTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var roleId = $(this).attr("data-roleId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Auth/Roles/Delete",
+                            "type": "POST",
+                            "data": { roleId: roleId },
+                            success: function (response) {
+                                if (response.StatusCode === 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        roleTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        roleTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

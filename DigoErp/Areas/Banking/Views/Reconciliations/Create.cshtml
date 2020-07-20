@@ -1,0 +1,151 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Banking.Reconciliation
+@using DigoErp.Resources.Banking.Transaction
+@using DigoErp.Resources.Purchase
+@using DigoErp.Service.Models
+@model List<Account>
+@{
+    ViewBag.Title = ReconciliationRes.NewReconciliation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var defualtSetting = Session["Default_Settings"] as Default ?? new Default();
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    var absolutePath = urlHelper.Content("~");
+}
+<div id="content" class="content" ng-controller="ReconciliationController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Banking</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-0" style="margin-bottom: 30px;">
+                <form name="ReconciliationSearchForm" id="ReconciliationSearchForm" data-parsley-validate="true" ng-submit="vm.searchTransactions()">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="form-group col-xl-3 required" group_class="" required="required">
+                                <label class="form-control-label">
+                                    @ReconciliationRes.StartDate
+                                </label>
+                                <input type="text" data-input="true" ng-model="vm.StartDate" data-parsley-required="true" class="form-control datepicker">
+                            </div>
+                            <div class="form-group col-xl-3 required" group_class="" required="required">
+                                <label class="form-control-label">
+                                    @ReconciliationRes.EndDate
+                                </label>
+                                <input type="text" data-input="true" ng-model="vm.EndDate" data-parsley-required="true" class="form-control datepicker">
+                            </div>
+                            <div class="form-group required col-xl-2">
+                                <label for="closing_balance" class="form-control-label">@ReconciliationRes.ClosingBalance</label>
+                                <input type="number" class="form-control" ng-model="vm.ClosingBalance" data-parsley-required="true" id="closing_balance" name="closing_balance" placeholder="">
+                            </div>
+                            <div class="form-group m-b-10 p-t-5 col-xl-2">
+                                <label for="AccountId">@PaymentRes.Account</label>
+                                <select class="form-control selectpicker" data-live-search="true" id="AccountId" name="AccountId" data-parsley-required="false" ng-model="vm.AccountId">
+                                    <option value="">@PaymentRes.SelectAccount</option>
+                                    @foreach (var account in Model)
+                                    {
+                                        <option value="@account.Id">@account.AccountName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-xl-2 m-t-20">
+                                <button type="submit" class="btn btn-success header-button-top">
+                                    <span class="fa fa-list"></span> &nbsp;@TransactionRes.Transactions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-0">
+                <div class="card-header f-w-600">
+                    @TransactionRes.Transactions
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-th-valign-middle table-td-valign-middle m-b-0">
+                            <thead>
+                                <tr>
+                                    <th>@ReconciliationRes.Date</th>
+                                    <th>@ReconciliationRes.Description</th>
+                                    <th>@ReconciliationRes.Contact</th>
+                                    <th>@ReconciliationRes.Deposit</th>
+                                    <th>@ReconciliationRes.Withdrawal</th>
+                                    <th>@ReconciliationRes.Clear</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="trans in vm.Transactions">
+                                    <td>{{trans.Date}}</td>
+                                    <td>{{trans.Description}}</td>
+                                    <td>{{trans.TransactionType === 0 ? trans.Contact : trans.TransactionType === 1 ? trans.Contact :"" }}</td>
+                                    <td>{{trans.TransactionType === 0 ? trans.Deposit : "N/A"}}</td>
+                                    <td>{{trans.TransactionType  === 1 ? trans.Withdrawal : "N/A"}}</td>
+                                    <td class="with-checkbox">
+                                        <div class="checkbox checkbox-css">
+                                            <input type="checkbox" value="" id="table_checkbox_{{trans.Id}}">
+                                            <label for="table_checkbox_{{trans.Id}}">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive" style="overflow-x:unset" ng-if="vm.Transactions.length > 0">
+                        <table class="table table-th-valign-middle table-td-valign-middle m-b-0">
+                            <tbody>
+                                <tr class="row">
+                                    <th class="col-md-9 text-right">@ReconciliationRes.OpeningBalance:</th>
+                                    <td id="closing-balance" class="col-md-3 text-right">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <th class="col-md-9 text-right">@ReconciliationRes.ClosingBalance:</th>
+                                    <td id="closing-balance" class="col-md-3 text-right">
+                                        <span id="closing-balance-total">0.00</span>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <th class="col-md-9 text-right">@ReconciliationRes.ClearedAmount:</th>
+                                    <td id="cleared-amount" class="col-md-3 text-right">
+                                        <span id="cleared-amount-total">0.00</span>
+                                    </td>
+                                </tr>
+                                <tr class="row table-danger">
+                                    <th class="col-md-9 text-right">@ReconciliationRes.Difference:</th>
+                                    <td id="difference" class="col-md-3 text-right">
+                                        <span id="difference-total">0.00</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-footer f-w-600">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="float-right">
+                                <a href="javascript:;" class="btn btn-default btn-lg m-r-5" ng-click="vm.Cancel()"><i class="fa fa-times"></i>@ReconciliationRes.Cancel</a>
+                                <a href="javascript:;" class="btn btn-primary btn-lg m-r-5 {{!vm.Id ? 'disabled' : ''}}" ng-click="vm.Reconcile()"><i class="fa fa-check"></i>@ReconciliationRes.Reconcile</a>
+                                <a href="javascript:;" class="btn btn-green btn-lg m-r-5  {{vm.DisabledSubBtn || vm.Transactions.length <=0 ? 'disabled' : ''}}"  ng-click="vm.Save()"><i class="fa fa-save"></i>@ReconciliationRes.Save</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Controllers/ReconciliationController.js"></script>
+}

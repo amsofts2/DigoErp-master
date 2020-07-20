@@ -1,0 +1,162 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Settings.Category
+@using DigoErp.Resources.Settings.Currencies
+@using DigoErp.Resources.Settings.Defualt
+@using DigoErp.Resources.Settings.Taxes
+@{
+    ViewBag.Title = AppResource.Settings;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    a:hover {
+        text-decoration: none;
+        color: gray
+    }
+</style>
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@AppResource.Settings</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@AppResource.Settings</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@AppResource.Settings</h4>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <div class="card border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="@Url.Action("Index", "Categories",new {area ="Settings"})">
+                                <div class="note m-b-15">
+                                    <div class="note-icon">
+                                        <i class="fa fa-folder"></i>
+                                    </div>
+                                    <div class="note-content">
+                                        <h4><b>@CategoryRes.Categories</b></h4>
+                                        <p>
+                                            @CategoryRes.UnlimitedCategories
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href="@Url.Action("Index", "Currencies",new {area ="Settings"})">
+                                <div class="note m-b-15">
+                                    <div class="note-icon">
+                                        <i class="fa fa-dollar-sign"></i>
+                                    </div>
+                                    <div class="note-content">
+                                        <h4><b>@CurrencyRes.Currencies</b></h4>
+                                        <p>
+                                            @CurrencyRes.CreateAndManage
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <a href="@Url.Action("Index", "Taxes", new {area = "Settings"})">
+                                <div class="note m-b-15">
+                                    <div class="note-icon">
+                                        <i class="fa fa-percent"></i>
+                                    </div>
+                                    <div class="note-content">
+                                        <h4><b>@TaxRes.Taxes</b></h4>
+                                        <p>
+                                            @TaxRes.ManageTaxes
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href="@Url.Action("Index", "Default", new {area = "Settings"})">
+                                <div class="note m-b-15">
+                                    <div class="note-icon">
+                                        <i class="fa fa-sliders-h"></i>
+                                    </div>
+                                    <div class="note-content">
+                                        <h4><b>@DefaultRes.Default</b></h4>
+                                        <p>
+                                            @DefaultRes.MangeDefault
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        @if (Session["UserRole"].ToString() == "Super Admin")
+                        {
+                            <div class="col-md-4">
+                                <a href="@Url.Action("Index", "Branches",new {area ="Common"})">
+                                    <div class="note m-b-15">
+                                        <div class="note-icon">
+                                            <i class="fa fa-code-branch"></i>
+                                        </div>
+                                        <div class="note-content">
+                                            <h4><b>@BranchRes.Branches</b></h4>
+                                            <p>
+                                                @BranchRes.MangeBranches
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                        <div class="col-md-4">
+                            <a href="@Url.Action("Index", "Users", new {area = "Auth"})">
+                                <div class="note m-b-15">
+                                    <div class="note-icon">
+                                        <i class="fa fa-users"></i>
+                                    </div>
+                                    <div class="note-content">
+                                        <h4><b>@UserRes.Users</b></h4>
+                                        <p>
+                                            @UserRes.MangeUsers
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href="@Url.Action("Index", "Roles", new {area = "Auth"})">
+                                <div class="note m-b-15">
+                                    <div class="note-icon">
+                                        <i class="fa fa-lock"></i>
+                                    </div>
+                                    <div class="note-content">
+                                        <h4><b>@AppResource.Roles</b></h4>
+                                        <p>
+                                            @AppResource.MangeRoles
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>

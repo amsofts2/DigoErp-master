@@ -1,0 +1,166 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Purchase
+@using DigoErp.Resources.Sales
+@using DigoErp.Service.Enums
+@model DigoErp.ViewModels.PaymentViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? PaymentRes.EditPayment : PaymentRes.NewPayment;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="PaymentController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Purchases</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="PaymentForm" id="PaymentForm" data-parsley-validate="true" ng-submit="vm.save()">
+                        <input type="hidden" name="paymentId" id="paymentId" ng-model="vm.Id" value="@(Model.Id > 0 ? Model.Id : 0)" />
+                        <input type="hidden" name="Attachment" id="Attachment" ng-model="vm.Attachment"/>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Date">@PaymentRes.Date</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5 datepicker" id="Date" name="Date" ng-model="vm.Date" readonly placeholder="Select Date">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Amount">@PaymentRes.Amount</label>
+                                    <input type="number" data-parsley-required="true" class="form-control m-b-5" id="Amount" name="Amount" ng-model="vm.Amount" placeholder="@PaymentRes.EnterAmount">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="AccountId">@PaymentRes.Account</label>
+                                    <select class="form-control selectpicker" data-live-search="true" id="AccountId" name="AccountId" data-parsley-required="false" ng-model="vm.AccountId">
+                                        <option value="">@PaymentRes.SelectAccount</option>
+                                        @foreach (var account in Model.Accounts)
+                                        {
+                                            <option value="@account.Id">@account.AccountName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="VendorId">@PaymentRes.Vendor</label>
+                                    <select class="form-control selectpicker" data-live-search="true" id="VendorId" name="VendorId" data-parsley-required="false" ng-model="vm.VendorId">
+                                        <option value="">@PaymentRes.SelectVendor</option>
+                                        @foreach (var vendor in Model.vendors)
+                                        {
+                                            <option value="@vendor.Id">@vendor.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Description">@PaymentRes.Description</label>
+                                    <textarea id="Description" name="Description" class="form-control m-b-5" rows="3" cols="80" ng-model="vm.Description" placeholder="@PaymentRes.EnterDescription"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="CategoryId">@PaymentRes.Category</label>
+                                    <select class="form-control selectpicker" data-live-search="true" name="CategoryId" id="CategoryId" data-parsley-required="false" ng-model="vm.CategoryId">
+                                        <option value="">@PaymentRes.SelectCategory</option>
+                                        @foreach (var category in Model.Categories)
+                                        {
+                                            <option value="@category.Id">@category.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Recurring">@PaymentRes.Recurring</label>
+                                    <select class="form-control m-b-5 selectpicker" data-live-search="true" data-parsley-required="true" id="Recurring" name="Recurring" ng-model="vm.Recurring">
+                                        <option value="">@RevenueRes.SelectRecurring</option>
+                                        <option value="0">@RevenueRes.No</option>
+                                        <option value="1">@RevenueRes.Daily</option>
+                                        <option value="2">@RevenueRes.Weekly</option>
+                                        <option value="3">@RevenueRes.Monthly</option>
+                                        <option value="4">@RevenueRes.Yearly</option>
+                                        <option value="5">@RevenueRes.Custom</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="PaymentMethod">@PaymentRes.PaymentMethod</label>
+                                    <select class="form-control m-b-5 selectpicker" data-live-search="true" data-parsley-required="true" id="PaymentMethod" name="PaymentMethod" ng-model="vm.PaymentMethod">
+                                        <option value="@((int)PaymentMethod.Cash)">@RevenueRes.Cash</option>
+                                        <option value="@((int)PaymentMethod.BankTransfer)">@RevenueRes.BankTransfer</option>
+                                        <option value="@((int)PaymentMethod.Debit)">@RevenueRes.Debit</option>
+                                        <option value="@((int)PaymentMethod.Credit)">@RevenueRes.Credit</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Refrence">@PaymentRes.Refrence</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Refrence" name="Refrence" ng-model="vm.Refrence" placeholder="@PaymentRes.EnterRefrence">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Logo">@PaymentRes.Attachment</label>
+                                    <input type="file" select-files-ng ng-model="fileArray" class="form-control m-b-5" id="Logo" placeholder="@PaymentRes.SelectPicture">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="BillId">@PaymentRes.Bill</label>
+                                    <select class="form-control selectpicker" data-live-search="true" name="BillId" id="BillId" data-parsley-required="false" ng-model="vm.BillId">
+                                        <option value="">@PaymentRes.SelectBill</option>
+                                        @foreach (var bill in Model.Bills)
+                                        {
+                                            <option value="@bill.Id">@bill.Number</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+    <script src="~/Scripts/Controllers/PaymentController.js"></script>
+}

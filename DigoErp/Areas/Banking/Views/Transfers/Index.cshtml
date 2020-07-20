@@ -1,0 +1,163 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Banking.Transfers
+@using DigoErp.Service.Enums
+@{
+    ViewBag.Title = TransferRes.Transfers;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Banking</a></li>
+        <li class="breadcrumb-item active">@TransferRes.Transfers</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@TransferRes.Transfers</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@TransferRes.Transfers</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("create", "Transfers",new {area ="Banking"})">@TransferRes.AddNew</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="transferDataTable" class="table table-striped table-bordered table-td-valign-middle"></table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+<script src="~/Scripts/moment.js"></script>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var transferTable = $("#transferDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url":appUrl+ "Banking/Transfers/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (transferTable === "" ? 0 : transferTable.page.info().page) + 1;
+                        d.RowsPerPage = transferTable === "" ? 10 : transferTable.page.info().length;
+                        d.SortByColumn = transferTable === "" ? 2 : transferTable.order()[0][0];
+                        d.SortDir = transferTable === "" ? "asc" : transferTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@TransferRes.Date", "data": "Date",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@TransferRes.FromAccount", "data": "FromAccountName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@TransferRes.ToAccount", "data": "ToAccountName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@TransferRes.Amount", "data": "Amount",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null) {
+                                return "";
+                            } else {
+                                if (full.SymbolPosition === '@SymbolPosition.BeforeAmount') {
+                                    return full.CurrencySymbol + " " + data;
+                                } else {
+                                    return data + " " + full.CurrencySymbol;
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-transferId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-transferId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            transferTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var transferId = $(this).attr("data-transferId");
+                window.location.href = appUrl + "banking/transfers/create?id=" + transferId;
+            });
+
+            transferTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var transferId = $(this).attr("data-transferId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": appUrl + "Banking/Transfers/Delete",
+                            "type": "POST",
+                            "data": { transferId: transferId },
+                            success: function (response) {
+                                if (response.StatusCode === 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        transferTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        transferTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

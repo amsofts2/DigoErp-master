@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0766766E-52D8-4E7A-9644-B4EDF3565663}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DigoErp.Service</RootNamespace>
+    <AssemblyName>DigoErp.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\InvoiceStatus.cs" />
+    <Compile Include="Enums\PaymentMethod.cs" />
+    <Compile Include="Enums\ReconciliationStatus.cs" />
+    <Compile Include="Enums\Recurring.cs" />
+    <Compile Include="Enums\SymbolPosition.cs" />
+    <Compile Include="Enums\TaxType.cs" />
+    <Compile Include="Enums\TransactionType.cs" />
+    <Compile Include="Enums\Types.cs" />
+    <Compile Include="Extentions\BillExtensions.cs" />
+    <Compile Include="Extentions\Bill_Item_Extentions.cs" />
+    <Compile Include="Extentions\CategoryExtension.cs" />
+    <Compile Include="Extentions\CurrencyExtensions.cs" />
+    <Compile Include="Extentions\CustomerExtentions.cs" />
+    <Compile Include="Extentions\DateExtentions.cs" />
+    <Compile Include="Extentions\DefaultExtentions.cs" />
+    <Compile Include="Extentions\InvoiceExtension.cs" />
+    <Compile Include="Extentions\InvoiceItemExtension.cs" />
+    <Compile Include="Extentions\ItemExtentions.cs" />
+    <Compile Include="Extentions\ItemUnitExtentions.cs" />
+    <Compile Include="Extentions\PaymentExtension.cs" />
+    <Compile Include="Extentions\AccountExtensions.cs" />
+    <Compile Include="Extentions\ReconciliationExtentions.cs" />
+    <Compile Include="Extentions\ReconciliationTransactionExtentions.cs" />
+    <Compile Include="Extentions\RevenueExtensions.cs" />
+    <Compile Include="Extentions\RoleExtension.cs" />
+    <Compile Include="Extentions\TaxExtentions.cs" />
+    <Compile Include="Extentions\TransactionExtensions.cs" />
+    <Compile Include="Extentions\TransfersExtensions.cs" />
+    <Compile Include="Extentions\VendorExtensions.cs" />
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Bill.cs" />
+    <Compile Include="Models\Bill_Item.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Currency.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Default.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\InvoiceItem.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemUnit.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\Reconciliation.cs" />
+    <Compile Include="Models\ReconciliationTransaction.cs" />
+    <Compile Include="Models\Revenue.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Tax.cs" />
+    <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\Transfer.cs" />
+    <Compile Include="Models\Vendor.cs" />
+    <Compile Include="Security\StringCipher.cs" />
+    <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\BillService.cs" />
+    <Compile Include="Services\BranchService.cs" />
+    <Compile Include="Extentions\BranchExtentions.cs" />
+    <Compile Include="Extentions\UserExtentions.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Branch.cs" />
+    <Compile Include="Models\DataTableResponse.cs" />
+    <Compile Include="Models\DataTableSearchModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CategoryService.cs" />
+    <Compile Include="Services\CurrencyService.cs" />
+    <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\DefaultService.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\InvoiceService.cs" />
+    <Compile Include="Services\ItemService.cs" />
+    <Compile Include="Services\ItemUnitService.cs" />
+    <Compile Include="Services\PaymentService.cs" />
+    <Compile Include="Services\ReconciliationService.cs" />
+    <Compile Include="Services\RevenueService.cs" />
+    <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\TaxService.cs" />
+    <Compile Include="Services\TransactionService.cs" />
+    <Compile Include="Services\TransferService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\VendorService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DigoErp.Repository\DigoErp.Repository.csproj">
+      <Project>{e786c988-34af-4d80-bfe5-87e65dc9b6bd}</Project>
+      <Name>DigoErp.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DigoErp.Resources\DigoErp.Resources.csproj">
+      <Project>{46277c1e-069c-4c5f-a709-c39a5c63019b}</Project>
+      <Name>DigoErp.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

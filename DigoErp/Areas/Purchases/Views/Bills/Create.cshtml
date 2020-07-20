@@ -1,0 +1,616 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Purchase
+@using DigoErp.Resources.Sales
+@using DigoErp.Service.Enums
+@using Newtonsoft.Json;
+@model DigoErp.ViewModels.BillViewModel
+@{
+    ViewBag.Title = Model.Bill.Id > 0 ? BillRes.EditBill : BillRes.NewBill;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var itemsJson = JsonConvert.SerializeObject(Model.Items);
+    var taxJson = JsonConvert.SerializeObject(Model.Taxes);
+    var currencySymbolPosition = Model.DefaultSetting.DefaultCurrency.SymbolPosition;
+    var currencySymbol = Model.DefaultSetting.DefaultCurrency.Symbol;
+    var defaultPriceWithSymbol = currencySymbolPosition == SymbolPosition.BeforeAmount.ToString() ?
+              currencySymbol + "0.00" : "0.00" + currencySymbol;
+    var billItemsJson = JsonConvert.SerializeObject(Model.Bill.Bill_Items);
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="BillController as vm" data-billItemsJson="@billItemsJson" data-itemsJson="@itemsJson" data-taxJson="@taxJson">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Purchases</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="billForm" id="billForm" data-parsley-validate="true" ng-submit="vm.save()">
+                        <input type="hidden" name="billId" id="billId" ng-model="vm.Id" value="@(Model.Bill.Id > 0 ? Model.Bill.Id : 0)" />
+                        <input type="hidden" name="currencySymbol" id="currencySymbol" ng-model="vm.currencySymbol" value="@currencySymbol" />
+                        <input type="hidden" name="Attachment" id="Attachment" ng-model="vm.Attachment" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="VendorId">@BillRes.Vendor</label>
+                                    <select class="form-control selectpicker" data-live-search="true" name="VendorId" id="VendorId" data-parsley-required="true" ng-model="vm.VendorId">
+                                        <option value="">@BillRes.SelectVendor</option>
+                                        @foreach (var vendor in Model.Vendors)
+                                        {
+                                            <option value="@vendor.Id">@vendor.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="VendorId">@BillRes.Currency</label>
+                                    <select class="form-control selectpicker" data-live-search="true" name="CurrencyId" id="CurrencyId" data-parsley-required="true" ng-model="vm.CurrencyId">
+                                        <option value="">@BillRes.SelectCurrency</option>
+                                        @foreach (var currency in Model.Currencies)
+                                        {
+                                            <option value="@currency.Id">@currency.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="DueDate">@BillRes.DueDate</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5 datepicker" id="DueDate" name="DueDate" ng-model="vm.DueDate" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="BillDate">@BillRes.BillDate</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5 datepicker" id="BillDate" name="BillDate" ng-model="vm.BillDate" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            @if (Model.Bill.Id <= 0)
+                            {
+                                <div class="col-md-6">
+                                    <div class="form-group m-b-10 p-t-5">
+                                        <label for="Number">@BillRes.BillNumber</label>
+                                        <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Number" name="Number" value="@Model.Bill.Number" placeholder="@BillRes.EnterNumber">
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-6">
+                                    <div class="form-group m-b-10 p-t-5">
+                                        <label for="Number">@BillRes.BillNumber</label>
+                                        <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Number" name="Number" ng-model="vm.Number" placeholder="@BillRes.EnterNumber">
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="OrderNumber">@BillRes.OrderNumber</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="OrderNumber" name="OrderNumber" ng-model="vm.OrderNumber" placeholder="@BillRes.EnterOrderNumber">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive overflow-x-scroll overflow-y-hidden">
+                                    <label for="submissionTable" class="form-control-label">@InvoiceRes.Items</label>
+                                    <table id="submissionTable" class="table table-bordered">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th class="text-center border-right-0 border-bottom-0">@AppResource.Actions</th>
+                                                <th class="text-left border-right-0 border-bottom-0">@InvoiceRes.Name</th>
+                                                <th class="text-center border-right-0 border-bottom-0">@InvoiceRes.Quantity</th>
+                                                <th class="text-center border-right-0 border-bottom-0">@InvoiceRes.Price</th>
+                                                <th class="text-center border-right-0 border-bottom-0">@InvoiceRes.Tax</th>
+                                                <th class="text-right border-bottom-0 item-total">@InvoiceRes.Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="invoice-item-rows">
+                                            @if (Model.Bill.Bill_Items.Any())
+                                            {
+                                                var counter = 0;
+                                                foreach (var billItem in Model.Bill.Bill_Items)
+                                                {
+                                                    <tr index="@counter" data-Bill_ItemId="@billItem.Id">
+                                                        <td class="text-center border-right-0 border-bottom-0">
+                                                            <button type="button" data-toggle="tooltip" id="deleteBtn" title="Delete" class="btn btn-icon btn-outline-danger btn-lg"><i class="fa fa-trash"></i></button>
+                                                        </td>
+                                                        <td class="border-right-0 border-bottom-0">
+                                                            <select class="form-control selectpicker" name="ItemId" id="ItemId" ng-model="vm.ItemId" data-parsley-required="true" data-live-search="true">
+                                                                <option value="">@InvoiceRes.SelectItem</option>
+                                                                @foreach (var item in Model.Items)
+                                                                {
+                                                                    if (billItem.ItemId == item.Id)
+                                                                    {
+                                                                        <option value="@item.Id" data-price="@item.SalePrice" data-taxid="@item.TaxId" selected="selected">@item.Name</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@item.Id" data-price="@item.SalePrice" data-taxid="@item.TaxId">@item.Name</option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                        <td class="border-right-0 border-bottom-0 w-10">
+                                                            <input type="text" id="Quantity" name="Quantity" required="required" data-item="quantity" value="@billItem.Quantity" class="form-control text-center">
+                                                        </td>
+                                                        <td class="border-right-0 border-bottom-0 pb-0 w-20">
+                                                            <div class="input-group">
+                                                                <input type="text" class="v-money form-control" id="Price" name="Price" value="@(billItem.Price + currencySymbol)" placeholder="@defaultPriceWithSymbol">
+                                                            </div>
+                                                        </td>
+                                                        <td class="border-right-0 border-bottom-0">
+                                                            <div class="form-group mb-0 select-tax">
+                                                                <select class="form-control selectpicker" name="TaxId" id="TaxId" data-parsley-required="true" ng-model="vm.TaxId" data-live-search="true">
+                                                                    <option value="">@InvoiceRes.SelectTax</option>
+                                                                    @foreach (var tax in Model.Taxes)
+                                                                    {
+                                                                        if (billItem.TaxId == tax.Id)
+                                                                        {
+                                                                            <option value="@tax.Id" data-rate="@tax.Rate" selected="selected">@(tax.Name + "(" + tax.Rate + "%)")</option>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <option value="@tax.Id" data-rate="@tax.Rate">@(tax.Name + "(" + tax.Rate + "%)")</option>
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-right total-column border-bottom-0 long-texts">
+                                                            <span id="Total1">@(billItem.Price * billItem.Quantity + currencySymbol)</span>
+                                                        </td>
+                                                    </tr>
+
+                                                    counter++;
+                                                }
+                                                <tr id="addItem">
+                                                    <td class="text-center border-right-0 border-bottom-0">
+                                                        <button type="button" id="button-add-item" data-toggle="tooltip" title="Add" data-original-title="Add" class="btn btn-icon btn-outline-success btn-lg"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td colspan="5" class="text-right border-bottom-0"></td>
+                                                </tr>
+                                                <tr id="tr-subtotal">
+                                                    <td colspan="5" class="text-right border-right-0 border-bottom-0">
+                                                        <strong>@InvoiceRes.Subtotal</strong>
+                                                    </td>
+                                                    <td class="text-right border-bottom-0 long-texts">
+                                                        <span id="sub-total">@(Model.Bill.SubTotal + currencySymbol)</span>
+                                                    </td>
+                                                </tr>
+                                                <tr id="tr-discount">
+                                                    <td colspan="5" class="text-right border-right-0 border-bottom-0">
+                                                        <a class="cursor-pointer text-info el-link el-link--primary is-underline el-popover__reference" id="add_discount" aria-describedby="el-popover-833" tabindex="0">
+                                                            <span class="el-link--inner">@InvoiceRes.AddDiscount</span>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-right border-bottom-0">
+                                                        <span id="discount-total">@(Model.Bill.Discount + currencySymbol)</span>
+                                                        <input id="discount" name="discount" type="hidden" class="form-control text-right">
+                                                    </td>
+                                                </tr>
+                                                <tr id="tr-tax">
+                                                    <td colspan="5" class="text-right border-right-0 border-bottom-0"><strong>@InvoiceRes.Tax</strong></td>
+                                                    <td class="text-right border-bottom-0 long-texts">
+                                                        <span id="tax-total">@(Model.Bill.Tax + currencySymbol)</span>
+                                                    </td>
+                                                </tr>
+                                                <tr id="tr-total">
+                                                    <td colspan="5" class="text-right border-right-0">
+                                                        <strong>@BillRes.Total</strong>
+                                                    </td>
+                                                    <td class="text-right long-texts">
+                                                        <span id="grand-total">@(Model.Bill.GrandTotal + currencySymbol)</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr index="0">
+                                                    <td class="text-center border-right-0 border-bottom-0">
+                                                        <button type="button" data-toggle="tooltip" id="deleteBtn" title="Delete" class="btn btn-icon btn-outline-danger btn-lg"><i class="fa fa-trash"></i></button>
+                                                    </td>
+                                                    <td class="border-right-0 border-bottom-0">
+                                                        <select class="form-control selectpicker" name="ItemId" id="ItemId" ng-model="vm.ItemId" data-parsley-required="true" data-live-search="true">
+                                                            <option value="">@InvoiceRes.SelectItem</option>
+                                                            @foreach (var item in Model.Items)
+                                                            {
+                                                                <option value="@item.Id" data-price="@item.SalePrice" data-taxid="@item.TaxId">@item.Name</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="border-right-0 border-bottom-0 w-10">
+                                                        <input type="text" id="Quantity" name="Quantity" autocomplete="off" required="required" data-item="quantity" ng-model="vm.Quantity" class="form-control text-center">
+                                                    </td>
+                                                    <td class="border-right-0 border-bottom-0 pb-0 w-20">
+                                                        <div class="input-group">
+                                                            <input type="text" class="v-money form-control" id="Price" name="Price" ng-model="vm.Price" placeholder="@defaultPriceWithSymbol">
+                                                        </div>
+                                                    </td>
+                                                    <td class="border-right-0 border-bottom-0">
+                                                        <div class="form-group mb-0 select-tax">
+                                                            <select class="form-control selectpicker" name="TaxId" id="TaxId" data-parsley-required="true" ng-model="vm.TaxId" data-live-search="true">
+                                                                <option value="">@InvoiceRes.SelectTax</option>
+                                                                @foreach (var tax in Model.Taxes)
+                                                                {
+                                                                    <option value="@tax.Id" data-rate="@tax.Rate">@(tax.Name + "(" + tax.Rate + "%)")</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right total-column border-bottom-0 long-texts">
+                                                        <span id="Total1">@defaultPriceWithSymbol</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr id="addItem">
+                                                    <td class="text-center border-right-0 border-bottom-0">
+                                                        <button type="button" id="button-add-item" data-toggle="tooltip" title="Add" data-original-title="Add" class="btn btn-icon btn-outline-success btn-lg"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td colspan="5" class="text-right border-bottom-0"></td>
+                                                </tr>
+                                                <tr id="tr-subtotal">
+                                                    <td colspan="5" class="text-right border-right-0 border-bottom-0">
+                                                        <strong>@InvoiceRes.Subtotal</strong>
+                                                    </td>
+                                                    <td class="text-right border-bottom-0 long-texts">
+                                                        <span id="sub-total">@defaultPriceWithSymbol</span>
+                                                    </td>
+                                                </tr>
+                                                <tr id="tr-discount">
+                                                    <td colspan="5" class="text-right border-right-0 border-bottom-0">
+                                                        <div role="tooltip" id="el-popover-833" aria-hidden="true" class="el-popover el-popper p-0 h-0" tabindex="0" style="width: 300px; display: none;">
+                                                            <div class="col-sm-6">
+                                                                <div class="input-group input-group-merge">
+                                                                    <input id="Discount" name="Discount" type="number" ng-model="vm.Discount" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a class="cursor-pointer text-info el-link el-link--primary is-underline el-popover__reference" id="add_discount" tabindex="0">
+                                                            <span class="el-link--inner">@InvoiceRes.AddDiscount</span>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-right border-bottom-0">
+                                                        <span id="discount-total">@defaultPriceWithSymbol</span>
+                                                        <input id="discount" name="discount" type="hidden" class="form-control text-right">
+                                                    </td>
+                                                </tr>
+                                                <tr id="tr-tax">
+                                                    <td colspan="5" class="text-right border-right-0 border-bottom-0"><strong>@InvoiceRes.Tax</strong></td>
+                                                    <td class="text-right border-bottom-0 long-texts">
+                                                        <span id="tax-total">@defaultPriceWithSymbol</span>
+                                                    </td>
+                                                </tr>
+                                                <tr id="tr-total">
+                                                    <td colspan="5" class="text-right border-right-0">
+                                                        <strong>@BillRes.Total</strong>
+                                                    </td>
+                                                    <td class="text-right long-texts">
+                                                        <span id="grand-total">@defaultPriceWithSymbol</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Notes">@BillRes.Notes</label>
+                                    <textarea id="Notes" name="Notes" class="form-control m-b-5" rows="3" cols="80" ng-model="vm.Notes" placeholder="@BillRes.EnterNotes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="VendorId">@BillRes.Category</label>
+                                    <select class="form-control selectpicker" data-live-search="true" id="CategoryId" name="CategoryId" data-parsley-required="true" ng-model="vm.CategoryId">
+                                        <option value="">@BillRes.SelectCategory</option>
+                                        @foreach (var category in Model.Categories)
+                                        {
+                                            <option value="@category.Id">@category.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Recurring">@BillRes.Recurring</label>
+                                    <select class="form-control m-b-5 selectpicker" data-live-search="true" data-parsley-required="true" id="Recurring" name="Recurring" ng-model="vm.Recurring">
+                                        <option value="">@BillRes.SelectRecurring</option>
+                                        <option value="0">@RevenueRes.No</option>
+                                        <option value="1">@RevenueRes.Daily</option>
+                                        <option value="2">@RevenueRes.Weekly</option>
+                                        <option value="3">@RevenueRes.Monthly</option>
+                                        <option value="4">@RevenueRes.Yearly</option>
+                                        <option value="5">@RevenueRes.Custom</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Logo">@BillRes.Attachment</label>
+                                    <input type="file" select-files-ng ng-model="fileArray" class="form-control m-b-5" id="Logo" placeholder="@BillRes.SelectPicture">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+
+
+<div class="modal fade" id="modal-dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@InvoiceRes.AddDiscount</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="number" class="form-control" value="@Model.Bill.Discount_Percentage" name="discount_on_sub_total" id="discount_on_sub_total" placeholder="%" />
+                <br />
+                <b>@InvoiceRes.ofsubtotal</b>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" class="btn btn-white" data-dismiss="modal">@InvoiceRes.Cancel</a>
+                <a href="javascript:;" class="btn btn-success" id="save_discount">@InvoiceRes.Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Controllers/BillController.js"></script>
+    <script type="text/javascript">
+        var counter = 1;
+        $(function () {
+            $('select[name=CurrencyId]').val('@Model.Bill.CurrencyId' > 0 ? '@Model.Bill.CurrencyId' : '@Model.DefaultSetting.CurrencyId');
+
+            $('.selectpicker').selectpicker('refresh');
+            var currencySymbolPosition = '@currencySymbolPosition';
+            var currencySymbol = '@currencySymbol';
+
+
+            $('#add_discount').on("click", function () {
+                $("#modal-dialog").modal('show');
+            });
+
+            $("#save_discount").on("click", function () {
+                var discount = $("#discount_on_sub_total").val();
+                var totalDiscount = 0;
+                var sub_total = Number($("#sub-total").text().replace(currencySymbol, ""));
+                var tax_total = Number($("#tax-total").text().replace(currencySymbol, ""));
+                var totalDiscount = (discount / 100) * sub_total;
+
+
+                var grandTotal = (sub_total + tax_total).toFixed(2);
+
+                grandTotal = grandTotal - totalDiscount;
+                if (currencySymbolPosition === "BeforeAmount") {
+                    totalDiscount = currencySymbol + totalDiscount.toFixed(2);
+
+                    grandTotal = currencySymbol + grandTotal.toFixed(2);
+                } else {
+                    totalDiscount = totalDiscount.toFixed(2) + currencySymbol;
+                    grandTotal = grandTotal.toFixed(2) + currencySymbol;
+                }
+
+                $("#grand-total").text(grandTotal);
+                $("#discount-total").text(totalDiscount);
+                $("#modal-dialog").modal('hide');
+            });
+
+            function makeItemDropdown() {
+                var items = $("#content").attr("data-itemsJson");
+                items = JSON.parse(items);
+                var html = '<select class="form-control selectpicker" name="ItemId" id="ItemId" ng-model="vm.ItemId" data-parsley-required="true" data-live-search="true">';
+                html += '<option value = "" >@InvoiceRes.SelectItem</option>';
+                $.each(items, function () {
+                    html += '<option value =' + this.Id + ' data-price=' + this.SalePrice + ' data-taxid=' + this.TaxId + '>' + this.Name + '</option>';
+                });
+                html += '</select>';
+                return html;
+            }
+
+            function makeTaxDropdown() {
+                var taxes = $("#content").attr("data-taxJson");
+                taxes = JSON.parse(taxes);
+                var html = '<select class="form-control selectpicker" name="TaxId" id="TaxId" data-parsley-required="true" ng-model="vm.TaxId" data-live-search="true">';
+                html += '<option value = "" >@InvoiceRes.SelectTax</option>';
+                $.each(taxes, function () {
+                    html += '<option value =' + this.Id + ' data-rate=' + this.Rate + '>' + this.Name + " (" + this.Rate + "%)" + '</option>';
+                });
+                html += '</select>';
+                return html;
+            }
+
+            function doCalculations() {
+                var sub_total = 0;
+                var grand_total = 0;
+                var total_Tax = 0;
+                $("#invoice-item-rows tr").each(function () {
+                    var self = $(this);
+                    var price = typeof self.find("#Price").val() !== "undefined" ? self.find("#Price").val().replace(currencySymbol, "") : 0;
+                    var quanity = typeof self.find("#Quantity").val() !== "undefined" ? self.find("#Quantity").val().replace(currencySymbol, "") : 0;
+                    var total = quanity * price;
+                    sub_total += total;
+
+                    var selectedTax = self.find("#TaxId");
+                    var rate = selectedTax.find("option:selected").attr("data-rate");
+                    if (typeof rate !== "undefined") {
+                        var tax = (rate / 100) * total;
+                        total_Tax += tax;
+                    }
+
+                    if (currencySymbolPosition === "BeforeAmount") {
+                        price = currencySymbol + price;
+                        self.find("#Price").val(price);
+
+                        total = currencySymbol + Number(total).toFixed(2);
+                        self.find("#Total1").text(total);
+                    } else {
+                        price = price + currencySymbol;
+                        self.find("#Price").val(price);
+
+                        total = Number(total).toFixed(2) + currencySymbol;
+                        self.find("#Total1").text(total);
+                    }
+
+                    self.find("#Total1").text(total);
+
+                });
+
+                var discount = $("#discount_on_sub_total").val();
+                var totalDiscount = 0;
+                if (discount > 0) {
+                    totalDiscount = (discount / 100) * sub_total;
+                }
+
+                grand_total += sub_total;
+                grand_total += total_Tax;
+                grand_total = grand_total - totalDiscount;
+
+                if (currencySymbolPosition === "BeforeAmount") {
+                    total_Tax = currencySymbol + Number(total_Tax).toFixed(2);
+                    sub_total = currencySymbol + Number(sub_total).toFixed(2);
+                    totalDiscount = currencySymbol + Number(totalDiscount).toFixed(2);
+                    grand_total = currencySymbol + Number(grand_total).toFixed(2);
+                } else {
+                    total_Tax = Number(total_Tax).toFixed(2) + currencySymbol;
+                    sub_total = Number(sub_total).toFixed(2) + currencySymbol;
+                    totalDiscount = Number(totalDiscount).toFixed(2) + currencySymbol;
+                    grand_total = Number(grand_total).toFixed(2) + currencySymbol;
+                }
+                $("#tax-total").text(total_Tax);
+                $("#sub-total").text(sub_total);
+
+
+                $("#discount-total").text(totalDiscount);
+                $("#grand-total").text(grand_total);
+            }
+
+            function initBillItemsEvents() {
+                $("#invoice-item-rows tr").each(function () {
+                    var self = $(this);
+
+                    self.on("change", "#Quantity", function () {
+                        doCalculations();
+                    });
+
+                    self.on("click", "#deleteBtn", function () {
+                        var totalRows = $("#invoice-item-rows tr").length;
+                        if (totalRows > 6) {
+                            $(self).remove();
+                            doCalculations();
+                        }
+                    });
+
+                    self.on("change", "#Price", function () {
+                        doCalculations();
+                    });
+
+                    self.on("change", "#Quantity", function () {
+                        doCalculations();
+                    });
+
+                    self.on("change", "#ItemId", function () {
+                        var price = Number($(this).find("option:selected").attr("data-price")).toFixed(2);
+                        self.find("#Quantity").val(1);
+                        if (currencySymbolPosition === "BeforeAmount") {
+                            price = currencySymbol + price;
+                            self.find("#Price").val(price);
+                        } else {
+                            price = price + currencySymbol;
+                            self.find("#Price").val(price);
+                        }
+
+                        var taxId = $(this).find("option:selected").attr("data-taxid");
+                        self.find("#TaxId").selectpicker('val', taxId);
+
+                        doCalculations();
+                    });
+
+                    self.on("changed.bs.select", "#TaxId", function (e, clickedIndex, newValue, oldValue) {
+                        doCalculations();
+                    });
+
+                });
+            }
+
+            $('#button-add-item').click(function () {
+                var tr = $('<tr index=' + counter + '><td class="text-center border-right-0 border-bottom-0">' +
+                    '<button type="button" data-toggle="tooltip" title="Delete" id="deleteBtn" class="btn btn-icon btn-outline-danger btn-lg"><i class="fa fa-trash"></i></button>' +
+                    '</td>' +
+                    '<td>' +
+                    makeItemDropdown()
+                    +
+                    '</td>' +
+                    '<td>' +
+                    '<input type="text" name="Quantity" id="Quantity" ng-model="vm.Quantity" autocomplete="off" required="required" data-item="quantity" class="form-control text-center">' +
+                    '</td>' +
+                    '<td>' +
+                    ' <input type="text" class="v-money form-control" name="Price" id="Price" ng-model="vm.Price" placeholder="@defaultPriceWithSymbol">' +
+                    '</td>' +
+                    '<td>' +
+                    makeTaxDropdown()
+                    +
+                    '</td>' +
+                    '<td class="text-right total-column border-bottom-0 long-texts">' +
+                    ' <div class="form-group required disabled text-right d-none"><input type="tel" class="v-money form-control"  name="Total" id="Total" ng-model="vm.Total" placeholder="@defaultPriceWithSymbol"></div><span id="Total1">@defaultPriceWithSymbol</span>' +
+                    '</td>' +
+                    '</tr>');
+                $($("#invoice-item-rows tr")[counter - 1]).after(tr);
+                $('.selectpicker').selectpicker('render');
+                initBillItemsEvents();
+                counter++;
+            });
+            initBillItemsEvents();
+            var billItemsJson = $("#content").attr("data-billItemsJson");
+            billItemsJson = JSON.parse(billItemsJson);
+            $.each(billItemsJson, function () {
+                var currentRow = $("#invoice-item-rows tr[data-Bill_ItemId=" + this.Id + "]");
+                $(currentRow).find('select[name=ItemId]').val(this.ItemId);
+                $(currentRow).find('select[name=TaxId]').val(this.TaxId);
+            });
+            $('.selectpicker').selectpicker('refresh');
+        });
+    </script>
+}

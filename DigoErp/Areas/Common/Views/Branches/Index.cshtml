@@ -1,0 +1,166 @@
+﻿@using DigoErp.Resources.App_Resources
+@{ 
+    ViewBag.Title = BranchRes.Branches;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@BranchRes.Branches</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@BranchRes.Branches</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@BranchRes.Branches</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("Create", "Branches",new {area="Common"})">@BranchRes.Newbranch</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="branchDataTable" class="table table-striped table-bordered table-td-valign-middle">
+                
+            </table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var branchTable = $("#branchDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/Common/Branches/GetResponse",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (branchTable === "" ? 0 : branchTable.page.info().page) + 1;
+                        d.RowsPerPage = branchTable === "" ? 10 : branchTable.page.info().length;
+                        d.SortByColumn = branchTable === "" ? 2 : branchTable.order()[0][0];
+                        d.SortDir = branchTable === "" ? "asc" : branchTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columnDefs": [{
+                    targets: 0,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).css('direction', 'ltr');
+                    }
+                }],
+                "columns": [
+                    {
+                        "title": "@BranchRes.Name", "data": "Name"
+                    },
+                    {
+                        "title": "@BranchRes.Email", "data": "Email",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@BranchRes.TaxNumber", "data": "TaxNumber",
+                        "sortable": false,
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@BranchRes.Phone", "data": "Phone",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@BranchRes.Address", "data": "Address",
+                        "sortable": false,
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-branchId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-branchId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            branchTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var branchId = $(this).attr("data-branchId");
+                window.location.href = appUrl + "common/branches/create?id=" + branchId;
+            });
+
+            branchTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var branchId = $(this).attr("data-branchId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Common/Branches/Delete",
+                            "type": "POST",
+                            "data": { branchId: branchId },
+                            success: function (response) {
+                                if (response.StatusCode == 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        branchTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        branchTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

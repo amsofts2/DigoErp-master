@@ -1,0 +1,134 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Account
+@model DigoErp.ViewModels.AccountViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? AccountRes.EditAccount : AccountRes.NewAccount;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="AccountController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Banking</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="accountForm" id="accountForm" data-parsley-validate="true" ng-submit="vm.saveForm()">
+                        <input type="hidden" name="accountId" id="accountId" ng-model="vm.Id" value="@(Model.Id > 0 ? Model.Id : 0)" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="AccountName">@AccountRes.AccountName</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="AccountName" name="AccountName" ng-model="vm.AccountName" placeholder="@AccountRes.EnterAccountName">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Number">@AccountRes.Number</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Number" name="Number" ng-model="vm.Number" placeholder="@AccountRes.EnterAccountNumber">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="IBANNumber">@AccountRes.IBANNumber</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="IBANNumber" name="IBANNumber" ng-model="vm.IBANNumber" placeholder="@AccountRes.EnterIBANNumber">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="CurrencyId">@AccountRes.Currency</label>
+                                    <select class="form-control selectpicker" data-live-search="true" id="CurrencyId" name="CurrencyId" data-parsley-required="true" ng-model="vm.CurrencyId">
+                                        <option value="">@AccountRes.SelectCurrency</option>
+                                        @foreach (var currency in Model.Currencies)
+                                        {
+                                            <option value="@currency.Id">@currency.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="OpeningBalance">@AccountRes.OpeningBalance</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="OpeningBalance" name="OpeningBalance" ng-model="vm.OpeningBalance" placeholder="@AccountRes.EnterOpeningBalance">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="BankName">@AccountRes.BankName</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="BankName" name="BankName" ng-model="vm.BankName" placeholder="@AccountRes.EnterBankName">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="BankPhone">@AccountRes.BankPhone</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="BankPhone" name="BankPhone" ng-model="vm.BankPhone" placeholder="@AccountRes.EnterBankPhone">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Notes">@AccountRes.BankAddress</label>
+                                    <textarea id="Notes" name="Notes" class="form-control m-b-5" rows="3" cols="80" ng-model="vm.BankAddress" placeholder="@AccountRes.EnterBankAddress"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="switcher_checkbox_3">@AccountRes.DefaultAccount</label>
+                                    <div class="switcher switcher-purple" style="display: block;">
+                                        <input type="checkbox" name="switcher_checkbox_3" id="switcher_checkbox_3" ng-model="vm.DefaultAccount" checked="" value="1">
+                                        <label for="switcher_checkbox_3"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="switcher_checkbox_4">@AccountRes.Enabled</label>
+                                    <div class="switcher switcher-purple" style="display: block;">
+                                        <input type="checkbox" name="switcher_checkbox_4" id="switcher_checkbox_4" ng-model="vm.IsEnabled" checked="" value="1">
+                                        <label for="switcher_checkbox_4"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+
+    <script src="~/Scripts/Controllers/AccountController.js"></script>
+}

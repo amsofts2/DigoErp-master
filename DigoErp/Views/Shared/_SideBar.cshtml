@@ -1,0 +1,113 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Item
+@using DigoErp.Resources.Sales
+@using DigoErp.Resources.Purchase
+@using DigoErp.Resources.Account
+@using DigoErp.Resources.Banking.Transfers
+@using DigoErp.Resources.Banking.Transaction
+@using DigoErp.Helpers
+@using DigoErp.Resources.Banking.Reconciliation
+@using DigoErp.Service.Models
+@{
+    var userDetails = Session["UserDetail"] as User ?? new User();
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    var absolutePath = urlHelper.Content("~");
+}
+<!-- begin #sidebar -->
+<div id="sidebar" class="sidebar">
+    <!-- begin sidebar scrollbar -->
+    <div data-scrollbar="true" data-height="100%">
+        <!-- begin sidebar user -->
+        <ul class="nav">
+            <li class="nav-profile">
+                <a href="javascript:;">
+                    <div class="cover with-shadow"></div>
+                    <div class="image">
+                        <img src="@(string.IsNullOrEmpty(userDetails.Photo) && !File.Exists(userDetails.Photo) ? absolutePath + "Content/avatar.png" : absolutePath + "" + userDetails.Photo)" alt="" />
+                    </div>
+                    <div class="info">
+                        @*<b class="caret pull-right"></b>*@
+                        @Session["UserName"]
+                        <small>@Session["UserRole"]</small>
+                    </div>
+                </a>
+            </li>
+        </ul>
+
+        <!-- begin sidebar nav -->
+        <ul class="nav">
+            <li class="nav-header">@AppResource.Navigation</li>
+
+            <li class="has-sub @Html.IsMenuSelected("revenues", "customers", "invoices","bills", "vendors", "payments","accounts", "transfers", "transactions","items","reconciliations")">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-chart-bar"></i>
+                    <span>@AppResource.Accounting</span>
+                </a>
+                <ul class="sub-menu">
+
+                    <!--Sales-->
+                    <li class="has-sub @Html.IsMenuSelected("revenues", "customers", "invoices","items")">
+                        <a href="javascript:;">
+                            <b class="caret"></b>
+                            <i class="fa fa-money-bill"></i>
+                            <span>@AppResource.Sales</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("invoices", "index")) ? "active" : "")"><a href="@Url.Action("Index", "Invoices", new {area = "Sales"})">@InvoiceRes.Invoices</a></li>
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("revenues", "index")) ? "active" : "")"><a href="@Url.Action("Index", "Revenues", new {area = "Sales"})">@RevenueRes.Revenues</a></li>
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("customers", "index")) ? "active" : "")"><a href="@Url.Action("Index", "Customers", new {area = "Sales"})">@CustomerRes.Customer</a></li>
+                            <li class="has-sub @Html.IsMenuSelected("items")">
+                                <a href="@Url.Action("Index", "Items", new {area = "Common"})">@ItemRes.Items</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!--Purchases-->
+                    <li class="has-sub @Html.IsMenuSelected("bills", "vendors", "payments")">
+                        <a href="javascript:;">
+                            <b class="caret"></b>
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>@AppResource.Purchases</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("bills", "index")) ? "active" : "")"><a href="@Url.Action("index", "bills", new {area = "purchases"})">@BillRes.Bills</a></li>
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("vendors", "index")) ? "active" : "")"><a href="@Url.Action("index", "vendors", new {area = "purchases"})">@VendorRes.Vendors</a></li>
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("payments", "index")) ? "active" : "")"><a href="@Url.Action("index", "payments", new {area = "purchases"})">@PaymentRes.Payments</a></li>
+                        </ul>
+                    </li>
+
+                    <!--Banking-->
+                    <li class="has-sub @Html.IsMenuSelected("accounts", "transfers", "transactions","reconciliations")">
+                        <a href="javascript:;">
+                            <b class="caret"></b>
+                            <i class="fa fa-briefcase"></i>
+                            <span>@AppResource.Banking</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("accounts", "index")) ? "active" : "")"><a href="@Url.Action("index", "accounts", new {area = "banking"})">@AccountRes.Accounts</a></li>
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("transfers", "index")) ? "active" : "")"><a href="@Url.Action("index", "Transfers", new {area = "banking"})">@TransferRes.Transfers</a></li>
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("transactions", "index")) ? "active" : "")"><a href="@Url.Action("index", "Transactions", new {area = "banking"})">@TransactionRes.Transactions</a></li>
+                            <li class="@(!string.IsNullOrEmpty(Html.IsSelected("reconciliations", "index")) ? "active" : "")"><a href="@Url.Action("index", "Reconciliations", new {area = "banking"})">@ReconciliationRes.Reconciliations</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="has-sub @Html.IsMenuSelected("settings","categories","currencies", "taxes","branches","users","roles","default")">
+                <a href="@Url.Action("Index", "Settings",new {area ="Settings"})">
+                    <b class="caret"></b>
+                    <i class="fa fa-briefcase"></i>
+                    <span>@AppResource.Settings</span>
+                </a>
+            </li>
+            <!-- begin sidebar minify button -->
+            <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+            <!-- end sidebar minify button -->
+        </ul>
+        <!-- end sidebar nav -->
+    </div>
+    <!-- end sidebar scrollbar -->
+</div>
+<div class="sidebar-bg"></div>
+<!-- end #sidebar -->

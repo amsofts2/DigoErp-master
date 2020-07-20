@@ -1,0 +1,83 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Settings.Taxes
+@using DigoErp.Service.Enums
+@model DigoErp.ViewModels.CategoryViewModel
+@{
+    ViewBag.Title = ViewBag.Id > 0 ? TaxRes.EditTaxRate: TaxRes.NewTaxRate;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="TaxController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="taxForm" id="taxForm" data-parsley-validate="true" ng-submit="vm.save()">
+                        <input type="hidden" name="taxId" id="taxId" ng-model="vm.Id" value="@(ViewBag.Id > 0 ? ViewBag.Id : 0)" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Name">@TaxRes.Name</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Name" name="Name" ng-model="vm.Name" placeholder="@TaxRes.EnterName">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Rate">@(TaxRes.Rate + " (%)")</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Rate" name="Rate" ng-model="vm.Rate" placeholder="@TaxRes.EnterRate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Type">@TaxRes.Type</label>
+                                    <select data-parsley-required="true" id="Type" name="Type" ng-model="vm.Type" class="form-control m-b-5 selectpicker" data-live-search="true">
+                                        <option value="@TaxType.Fixed">@TaxRes.Fixed</option>
+                                        <option value="@TaxType.Normal" selected="selected">@TaxRes.Normal</option>
+                                        <option value="@TaxType.Inclusive">@TaxRes.Inclusive</option>
+                                        <option value="@TaxType.Compound">@TaxRes.Compound</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="switcher_checkbox_3">@TaxRes.Enabled</label>
+                                    <div class="switcher switcher-purple" style="display: block;">
+                                        <input type="checkbox" name="switcher_checkbox_3" id="switcher_checkbox_3" ng-model="vm.Enabled" checked="" value="1">
+                                        <label for="switcher_checkbox_3"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+    <script src="~/Scripts/Controllers/TaxController.js"></script>
+}

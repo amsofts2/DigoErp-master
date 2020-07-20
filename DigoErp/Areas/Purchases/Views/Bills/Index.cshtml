@@ -1,0 +1,191 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Purchase
+@using DigoErp.Service.Enums
+@{
+    ViewBag.Title = BillRes.Bill;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Purchases</a></li>
+        <li class="breadcrumb-item active">@BillRes.Bill</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@BillRes.Bill</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@BillRes.Bill</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("create", "bills",new {area ="purchases"})">@BillRes.AddNew</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="billDataTable" class="table table-striped table-bordered table-td-valign-middle"></table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+<script src="~/Scripts/moment.js"></script>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var billTable = $("#billDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": appUrl+ "Purchases/Bills/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (billTable === "" ? 0 : billTable.page.info().page) + 1;
+                        d.RowsPerPage = billTable === "" ? 10 : billTable.page.info().length;
+                        d.SortByColumn = billTable === "" ? 2 : billTable.order()[0][0];
+                        d.SortDir = billTable === "" ? "asc" : billTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@BillRes.BillNumber", "data": "Number"
+                    },
+                    {
+                        "title": "@BillRes.Vendor", "data": "VendorName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@BillRes.Amount", "data": "GrandTotal",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null) {
+                                return "";
+                            } else {
+                                if (full.SymbolPosition === '@SymbolPosition.BeforeAmount') {
+                                    return full.CurrencySymbol  +" " + data;
+                                } else {
+                                    return data + " " + full.CurrencySymbol;
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "title": "@BillRes.BillDate", "data": "BillDate",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@BillRes.DueDate", "data": "DueDate",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@BillRes.Status", "data": "Status",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null) {
+                                return "";
+                            } else {
+                                if (data === "@InvoiceStatus.DRAFT") {
+                                    return '<span class="badge badge-pill badge-primary">' + '@AppResource.ResourceManager.GetString(InvoiceStatus.DRAFT.ToString())' + '</span>';
+                                }
+                                else if (data === "@InvoiceStatus.PAID") {
+                                    return '<span class="badge badge-pill badge-green">' + '@AppResource.ResourceManager.GetString(InvoiceStatus.PAID.ToString())' + '</span>';
+                                }
+                                else if (data === "@InvoiceStatus.SENT") {
+                                    return '<span class="badge badge-pill badge-danger">' + '@AppResource.ResourceManager.GetString(InvoiceStatus.SENT.ToString())' + '</span>';
+                                }
+                                else if (data === "@InvoiceStatus.Cancelled") {
+                                    return '<span class="badge badge-pill badge-dark">' + '@AppResource.ResourceManager.GetString(InvoiceStatus.Cancelled.ToString())' + '</span>';
+                                }
+                                else {
+                                    return "";
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-billId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                '<a href=' + appUrl + "purchases/bills/details/" + row.Id + ' class="btn btn-dark btn-xs m-r-5 viewBtn" ><i class="fa fa-eye"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-billId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            billTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var billId = $(this).attr("data-billId");
+                window.location.href = appUrl + "purchases/bills/create/" + billId;
+            });
+
+            billTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var billId = $(this).attr("data-billId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Purchases/Bills/Delete",
+                            "type": "POST",
+                            "data": { billId: billId },
+                            success: function (response) {
+                                if (response.StatusCode === 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        billTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        billTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

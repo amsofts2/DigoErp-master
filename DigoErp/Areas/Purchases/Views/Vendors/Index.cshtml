@@ -1,0 +1,152 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Purchase
+@{
+    ViewBag.Title = VendorRes.Vendor;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Purchases</a></li>
+        <li class="breadcrumb-item active">@VendorRes.Vendor</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@VendorRes.Vendor</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@VendorRes.Vendor</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("Create", "Vendors",new {area ="Purchases"})">@VendorRes.AddNew</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="vendorDataTable" class="table table-striped table-bordered table-td-valign-middle">
+            </table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var vendorTable = $("#vendorDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": appUrl+ "Purchases/Vendors/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (vendorTable === "" ? 0 : vendorTable.page.info().page) + 1;
+                        d.RowsPerPage = vendorTable === "" ? 10 : vendorTable.page.info().length;
+                        d.SortByColumn = vendorTable === "" ? 2 : vendorTable.order()[0][0];
+                        d.SortDir = vendorTable === "" ? "asc" : vendorTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@VendorRes.Name", "data": "Name"
+                    },
+                    {
+                        "title": "@VendorRes.Email", "data": "Email",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@VendorRes.PhoneNumber", "data": "PhoneNumber",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@VendorRes.IsEnabled", "data": "IsEnabled",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-vendorId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-vendorId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            vendorTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var vendorId = $(this).attr("data-vendorId");
+                window.location.href = appUrl + "purchases/vendors/create?id=" + vendorId;
+            });
+
+            vendorTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var vendorId = $(this).attr("data-vendorId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Purchases/Vendors/Delete",
+                            "type": "POST",
+                            "data": { vendorId: vendorId },
+                            success: function (response) {
+                                if (response.StatusCode === 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        vendorTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        vendorTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

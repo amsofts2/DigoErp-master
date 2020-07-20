@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigoErp", "DigoErp\DigoErp.csproj", "{15B2C442-9C93-4544-AAA4-5E3FB70AA9F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigoErp.Service", "DigoErp.Service\DigoErp.Service.csproj", "{0766766E-52D8-4E7A-9644-B4EDF3565663}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigoErp.Repository", "DigoErp.Repository\DigoErp.Repository.csproj", "{E786C988-34AF-4D80-BFE5-87E65DC9B6BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigoErp.Resources", "DigoErp.Resources\DigoErp.Resources.csproj", "{46277C1E-069C-4C5F-A709-C39A5C63019B}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DigoErp.Database", "DigoErp.Database\DigoErp.Database.sqlproj", "{F0571F91-CF2E-42DC-8235-14E0CBA8293A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15B2C442-9C93-4544-AAA4-5E3FB70AA9F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B2C442-9C93-4544-AAA4-5E3FB70AA9F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B2C442-9C93-4544-AAA4-5E3FB70AA9F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B2C442-9C93-4544-AAA4-5E3FB70AA9F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0766766E-52D8-4E7A-9644-B4EDF3565663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0766766E-52D8-4E7A-9644-B4EDF3565663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0766766E-52D8-4E7A-9644-B4EDF3565663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0766766E-52D8-4E7A-9644-B4EDF3565663}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E786C988-34AF-4D80-BFE5-87E65DC9B6BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E786C988-34AF-4D80-BFE5-87E65DC9B6BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E786C988-34AF-4D80-BFE5-87E65DC9B6BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E786C988-34AF-4D80-BFE5-87E65DC9B6BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46277C1E-069C-4C5F-A709-C39A5C63019B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46277C1E-069C-4C5F-A709-C39A5C63019B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46277C1E-069C-4C5F-A709-C39A5C63019B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46277C1E-069C-4C5F-A709-C39A5C63019B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0571F91-CF2E-42DC-8235-14E0CBA8293A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0571F91-CF2E-42DC-8235-14E0CBA8293A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0571F91-CF2E-42DC-8235-14E0CBA8293A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F0571F91-CF2E-42DC-8235-14E0CBA8293A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0571F91-CF2E-42DC-8235-14E0CBA8293A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0571F91-CF2E-42DC-8235-14E0CBA8293A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40DF1510-7BD4-41C9-9DAD-82925E0D9F15}
+	EndGlobalSection
+EndGlobal

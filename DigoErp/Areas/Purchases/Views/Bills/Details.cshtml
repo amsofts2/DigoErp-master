@@ -1,0 +1,380 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Purchase
+@using DigoErp.Resources.Sales
+@using DigoErp.Service.Enums
+@using DigoErp.Service.Models
+@model DigoErp.Areas.Purchases.Models.BillDetailViewModel
+@{
+    ViewBag.Title = BillRes.Bills;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var defualtSetting = Session["Default_Settings"] as Default ?? new Default();
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    var absolutePath = urlHelper.Content("~");
+    var invoiceStatus = "";
+    var cardStatus = "";
+    try
+    {
+        invoiceStatus = AppResource.ResourceManager.GetString(Model.Bill.Status);
+        if (Model.Bill.Status == InvoiceStatus.DRAFT.ToString())
+        {
+            cardStatus = "status-primary";
+        }
+        if (Model.Bill.Status == InvoiceStatus.PAID.ToString())
+        {
+            cardStatus = "status-success";
+        }
+        if (Model.Bill.Status == InvoiceStatus.SENT.ToString())
+        {
+            cardStatus = "status-danger";
+        }
+        if (Model.Bill.Status == InvoiceStatus.Cancelled.ToString())
+        {
+            cardStatus = "status-dark";
+        }
+    }
+    catch (Exception)
+    {
+    }
+}
+<style>
+    .btn:not(:last-child) {
+        margin-right: .5rem;
+    }
+</style>
+<div id="content" class="content">
+    <div class="card">
+        <div class="card-header @cardStatus">
+            <h2 class="d-inline-flex mb-0 long-texts float-left">@BillRes.Bill:@Model.Bill.Number</h2>
+            <h3 class="text-white mb-0 float-right">@invoiceStatus</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mx--4">
+                <div class="col-md-7 border-bottom-1">
+                    <div class="table-responsive mt-2">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <img src="@(absolutePath + defualtSetting.Logo)" alt="" style="width: 100px;height: 100px;box-sizing: border-box;">
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <div class="col-md-5 border-bottom-1">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        @Model.Branch.Name
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        @Model.Branch.Address
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        @InvoiceRes.TaxNumber: @Model.Branch.TaxNumber
+                                    </th>
+                                </tr>
+                                <tr><th></th></tr>
+                                <tr>
+                                    <th>
+                                        @Model.Branch.Email
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> <div class="row">
+                <div class="col-md-7 long-texts">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        @BillRes.BillFrom
+                                        <strong class="d-block">@Model.Vendor.Name</strong>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        @Model.Vendor.Address
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        @InvoiceRes.TaxNumber: @Model.Vendor.TaxNumber
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        @Model.Vendor.Email
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-5 long-texts">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>@BillRes.BillNumber:</th>
+                                    <td class="text-right">@Model.Bill.Number</td>
+                                </tr>
+                                <tr>
+                                    <th>@InvoiceRes.OrderNumber:</th>
+                                    <td class="text-right">@Model.Bill.OrderNumber</td>
+                                </tr>
+                                <tr>
+                                    <th>@BillRes.BillDate:</th>
+                                    <td class="text-right">@Model.Bill.BillDate</td>
+                                </tr>
+                                <tr>
+                                    <th>@InvoiceRes.PaymentDue:</th>
+                                    <td class="text-right">@Model.Bill.DueDate</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> <div class="row show-table">
+                <div class="col-md-12">
+                    <div class="table-responsive overflow-y-hidden">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr class="d-flex flex-nowrap">
+                                    <th class="col-xs-4 col-sm-5 pl-5">@InvoiceRes.Items</th>
+                                    <th class="col-xs-4 col-sm-1 text-center">@InvoiceRes.Quantity</th>
+                                    <th class="col-sm-3 text-right d-none d-sm-block">@InvoiceRes.Price</th>
+                                    <th class="col-xs-4 col-sm-3 text-right pr-5">@InvoiceRes.Total</th>
+                                </tr>
+                                @foreach (var item in Model.Bill.Bill_Items)
+                                {
+
+
+                                    <tr class="d-flex flex-nowrap">
+                                        <td class="col-xs-4 col-sm-5 pl-5">
+                                            @item.Name
+                                        </td>
+                                        <td class="col-xs-4 col-sm-1 text-center">@item.Quantity</td>
+                                        @if (Model.Currency.SymbolPosition == SymbolPosition.BeforeAmount.ToString())
+                                        {
+                                            var price = Model.Currency.Symbol + item.Price;
+                                            var total = Model.Currency.Symbol + (item.Quantity * item.Price);
+                                            <td class="col-sm-3 text-right d-none d-sm-block">@price</td>
+                                            <td class="col-xs-4 col-sm-3 text-right pr-5">@total</td>
+                                        }
+                                        else
+                                        {
+
+                                            var price = item.Price + Model.Currency.Symbol;
+                                            var total = (item.Quantity * item.Price) + Model.Currency.Symbol;
+                                            <td class="col-sm-3 text-right d-none d-sm-block">@price</td>
+                                            <td class="col-xs-4 col-sm-3 text-right pr-5">@total</td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-7">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <p class="form-control-label">@InvoiceRes.Notes</p>
+                                        <p class="text-muted long-texts">@Model.Bill.Notes</p>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>@InvoiceRes.Subtotal:</th>
+                                    <td class="text-right">@(Model.Currency.SymbolPosition == SymbolPosition.BeforeAmount.ToString() ? Model.Currency.Symbol + Model.Bill.SubTotal : Model.Bill.SubTotal + Model.Currency.Symbol)</td>
+                                </tr>
+                                @if (Model.Bill.Discount_Percentage > 0)
+                                {
+                                    <tr>
+                                        <th>@InvoiceRes.Discount (@(Model.Bill.Discount_Percentage)%):</th>
+                                        <td class="text-right">@(Model.Currency.SymbolPosition == SymbolPosition.BeforeAmount.ToString() ? Model.Currency.Symbol + Model.Bill.Tax : Model.Bill.Tax + Model.Currency.Symbol)</td>
+                                    </tr>
+                                }
+                                @if (Model.Bill.Tax > 0)
+                                {
+                                    <tr>
+                                        <th>@InvoiceRes.Tax (@(Model.Bill.Tax)%):</th>
+                                        <td class="text-right">@(Model.Currency.SymbolPosition == SymbolPosition.BeforeAmount.ToString() ? Model.Currency.Symbol + Model.Bill.Tax : Model.Bill.Tax + Model.Currency.Symbol)</td>
+                                    </tr>
+                                }
+                                @if (Model.Bill.Status == InvoiceStatus.PAID.ToString())
+                                {
+                                    <tr>
+                                        <th class="text-success">
+                                            @AppResource.PAID:
+                                        </th>
+                                        <td class="text-success text-right">- @(Model.Currency.SymbolPosition == SymbolPosition.BeforeAmount.ToString() ? Model.Currency.Symbol + Model.Bill.GrandTotal : Model.Bill.GrandTotal + Model.Currency.Symbol)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@InvoiceRes.Total:</th>
+                                        <td class="text-right">@(Model.Currency.SymbolPosition == SymbolPosition.BeforeAmount.ToString() ? Model.Currency.Symbol + "0.00" : "0.00" + Model.Currency.Symbol)</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <th>@InvoiceRes.Total:</th>
+                                        <td class="text-right">@(Model.Currency.SymbolPosition == SymbolPosition.BeforeAmount.ToString() ? Model.Currency.Symbol + Model.Bill.GrandTotal : Model.Bill.GrandTotal + Model.Currency.Symbol)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row align-items-center">
+                <div class="col-xs-12 col-sm-4"></div>
+                <div class="col-xs-12 col-sm-8 text-right">
+                    <a href="@Url.Action("Create", "Bills", new { id = @Model.Bill.Id, area = "Purchases" })" class="btn btn-info header-button-top">
+                        <i class="fas fa-edit"></i>&nbsp; @AppResource.Edit
+                    </a>
+                    <a href="#" class="btn btn-success header-button-top printBtn">
+                        <i class="fa fa-print"></i>&nbsp; @AppResource.Print
+                    </a>
+                    <div class="dropup header-drop-top" style="DISPLAY: INLINE;">
+                        <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-primary header-button-top"><i class="fa fa-chevron-up"></i>&nbsp; @AppResource.MoreActions</button>
+                        <div role="menu" class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -2px, 0px);">
+                            @if (Model.Bill.Status != InvoiceStatus.Cancelled.ToString())
+                            {
+                                if (Model.Bill.Status != InvoiceStatus.PAID.ToString())
+                                {
+                                    <a href="@Url.Action("UpdateStatus", "Bills", new {bill_Id = Model.Bill.Id, status = InvoiceStatus.PAID, area = "Purchases"})" id="markPaid" data-status="@InvoiceStatus.PAID" class="dropdown-item">@AppResource.MarkPaid</a>
+                                    <button id="button-payment" class="dropdown-item">@AppResource.AddPayment</button>
+                                }
+                                <div class="dropdown-divider"></div>
+                                if (Model.Bill.Status == InvoiceStatus.SENT.ToString())
+                                {
+                                    <button type="button" disabled="disabled" class="dropdown-item">
+                                        <span class="text-disabled">@AppResource.MarkSent</span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("UpdateStatus", "Bills", new {bill_Id= Model.Bill.Id,status = InvoiceStatus.SENT, area = "Purchases" })" class="dropdown-item">@AppResource.MarkSent</a>
+                                }
+                                <a href="@Url.Action("SendEmail", "Invoices", new {vendorId = Model.Bill.VendorId,area = "Purchases"})" class="dropdown-item">@AppResource.SendEmail</a>
+                                <a href="#" class="dropdown-item downloadPdf">@AppResource.DownloadPDF</a>
+                                <a href="@Url.Action("UpdateStatus", "Bills", new {bill_Id= Model.Bill.Id,status = InvoiceStatus.Cancelled, area = "Purchases" })" class="dropdown-item">@AppResource.Cancel</a>
+                                <button type="button" title="Delete" class="dropdown-item action-delete">@AppResource.Delete</button>
+                            }
+                            else
+                            {
+                                <a href="#" class="dropdown-item downloadPdf">@AppResource.DownloadPDF</a>
+                                <button type="button" title="Delete" class="dropdown-item action-delete">@AppResource.Delete</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+<script src="~/Scripts/pdfmake.min.js"></script>>
+<script src="~/Scripts/html2canvas.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            $(".action-delete").on("click", function (evt) {
+                evt.preventDefault();
+                var invoiceId = '@Model.Bill.Id';
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": appUrl + "Purchases/Bills/Delete",
+                            "type": "POST",
+                            "data": { invoiceId: invoiceId },
+                            success: function (response) {
+                                if (response.StatusCode === 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        window.location.href = appUrl + "purchases/bills";
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        window.location.href = appUrl + "purchases/bills";
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+
+            $(".downloadPdf").on("click", function() {
+                html2canvas(document.getElementById('content'), {
+                    onrendered: function (canvas) {
+                        var data = canvas.toDataURL();
+                        var docDefinition = {
+                            content: [{
+                                image: data,
+                                width: 500
+                            }]
+                        };
+                        pdfMake.createPdf(docDefinition).download('@Model.Bill.Number'+".pdf");
+                    }
+                });
+            });
+
+            $(".printBtn").on("click", function () {
+                html2canvas($("#content"), {
+                    onrendered: function (canvas) {
+                        var myImage = canvas.toDataURL("image/png");
+                        var tWindow = window.open("");
+                        $(tWindow.document.body)
+                            .html("<img id='Image' src=" + myImage + " style='width:100%;'></img>")
+                            .ready(function () {
+                                tWindow.focus();
+                                tWindow.print();
+                            });
+                    }
+                });
+            });
+        })
+    </script>
+}

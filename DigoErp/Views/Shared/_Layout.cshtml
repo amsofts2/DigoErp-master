@@ -1,0 +1,97 @@
+﻿@using DigoErp.Helpers
+@using DigoErp.Service.Models
+<!DOCTYPE html>
+<html lang="@CultureHelper.GetCurrentNeutralCulture()">
+<head>
+    <meta charset="utf-8" />
+    <title>DigoSolutions @ViewBag.Title</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="~/Images/Digo_Favicon.jpg" rel="shortcut icon" type="image/x-icon" />
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    @Styles.Render("~/assets/requiredCss")
+    @Scripts.Render("~/Scripts/angularjs")
+    @RenderSection("styles", false)
+</head>
+<body ng-app="digoErpApp">
+    <!-- begin #page-loader -->
+    <div id="page-loader" class="fade show"><span class="spinner"></span></div>
+    <!-- end #page-loader -->
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade page-sidebar-fixed page-header-fixed @(@CultureHelper.IsRighToLeft() ? "page-with-right-sidebar" : "")">
+        <!-- begin #header -->
+        @Html.Partial("_Header")
+        <!-- end #header -->
+        <!-- begin #sidebar -->
+        @Html.Partial("_SideBar")
+        <!-- end #sidebar -->
+        @RenderBody()
+        <!-- begin #footer -->
+        @Html.Partial("_Footer")
+        <!-- end #footer -->
+        @*@Html.Partial("_ThemePanel")*@
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    @{
+        var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+        var absolutePath = urlHelper.Content("~");
+        var defualtSetting = Session["Default_Settings"] as Default ?? new Default();
+        var recordsPerPage = defualtSetting.RecordsPerPage > 0 ? defualtSetting.RecordsPerPage : 0;
+    }
+    <input type="hidden" id="appURL" value="@absolutePath" />
+    <input type="hidden" id="recordsPerPage" value="@recordsPerPage" />
+    <input type="hidden" id="currentLang" value="@CultureHelper.GetCurrentNeutralCulture()" />
+    <!-- end page container -->
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    @Scripts.Render("~/Scripts/jquery")
+
+    @if (CultureHelper.IsRighToLeft())
+    {
+      <script src="~/assets/plugins/bootstrap-select/js/i18n/defaults-ar_AR.min.js" type="text/javascript"></script>
+        <script src="~/assets/plugins/parsley/i18n/ar.js" type="text/javascript"></script>
+        <script>
+            window.ParsleyValidator.setLocale('ar');
+        </script>
+    }
+<script>
+    function convertDbDateToClientDate(date) {
+        try {
+            var formateddate = moment(date).format("DD-MM-YYYY");
+            return formateddate;
+        } catch (e) {
+            return date;
+        } 
+    }
+    $(document).ready(function () {
+        var date = new Date();
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        $('.datepicker').datepicker({
+            format: 'dd-mm-yyyy',
+            todayHighlight: true,
+            autoclose: true
+        });
+
+        $(".datepicker").datepicker("setDate", today);
+
+        $('#colorpicker').colorpicker({
+            format: 'hex'
+        });
+        $('.selectpicker').selectpicker('render');
+    });
+
+    $(document).ajaxStart(function() {
+        //ajax request went so show the loading image
+        $("page-loader").removeClass("d-none");
+    }).ajaxStop(function () {
+        //got response so hide the loading image
+        $("page-loader").addClass("d-none");
+    });
+</script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

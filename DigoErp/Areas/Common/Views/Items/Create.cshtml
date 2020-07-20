@@ -1,0 +1,117 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Item
+@model DigoErp.ViewModels.ItemViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? ItemRes.EditItem : ItemRes.NewItem;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="ItemController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Sales</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="itemForm" id="itemForm" data-parsley-validate="true" ng-submit="vm.save()">
+                        <input type="hidden" name="itemId" id="itemId" ng-model="vm.Id" value="@(Model.Id > 0 ? Model.Id : 0)" />
+                        <input type="hidden" name="Picture" id="Picture" ng-model="vm.Picture" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Name">@ItemRes.Name</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Name" name="Name" ng-model="vm.Name" placeholder="@ItemRes.Entername">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="TaxId">@ItemRes.Tax</label>
+                                    <select class="form-control selectpicker" data-live-search="true" name="TaxId" id="TaxId" data-parsley-required="false" ng-model="vm.TaxId">
+                                        <option value="">@ItemRes.SelectTax</option>
+                                        @foreach (var tax in Model.taxes)
+                                        {
+                                            <option value="@tax.Id">@tax.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Description">@ItemRes.Description</label>
+                                    <textarea id="Description" name="Description" class="form-control m-b-5" rows="3" cols="90" ng-model="vm.Description" placeholder="@ItemRes.EnterDescription"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="SalePrice">@ItemRes.SalePrice</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="SalePrice" name="SalePrice" ng-model="vm.SalePrice" placeholder="@ItemRes.EnterSalePrice">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="PurchasePrice">@ItemRes.PurchasePrice</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="PurchasePrice" name="PurchasePrice" ng-model="vm.PurchasePrice" placeholder="@ItemRes.EnterPurchasePrice">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="CategoryId">@ItemRes.Category</label>
+                                    <select class="form-control selectpicker" data-live-search="true" id="CategoryId" name="CategoryId" data-parsley-required="false" ng-model="vm.CategoryId">
+                                        <option value="">@ItemRes.SelectCategory</option>
+                                        @foreach (var catagory in Model.catagories)
+                                        {
+                                            <option value="@catagory.Id">@catagory.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Logo">@ItemRes.Picture</label>
+                                    <input type="file" select-files-ng ng-model="fileArray" class="form-control m-b-5" id="Logo" placeholder="@ItemRes.SelectPicture">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="switcher_checkbox_3">@ItemRes.IsEnabled</label>
+                                    <div class="switcher switcher-purple" style="display: block;">
+                                        <input type="checkbox" name="switcher_checkbox_3" id="switcher_checkbox_3" ng-model="vm.IsEnabled" checked="" value="1">
+                                        <label for="switcher_checkbox_3"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+    <script src="~/Scripts/Controllers/ItemController.js"></script>
+}

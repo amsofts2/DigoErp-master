@@ -1,0 +1,171 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Purchase
+@using DigoErp.Service.Enums
+@{
+    ViewBag.Title = PaymentRes.Payment;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Purchases</a></li>
+        <li class="breadcrumb-item active">@PaymentRes.Payment</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@PaymentRes.Payment</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@PaymentRes.Payment</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("create", "payments",new {area ="purchases"})">@PaymentRes.AddNew</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="paymentDataTable" class="table table-striped table-bordered table-td-valign-middle"></table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+<script src="~/Scripts/moment.js"></script>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var paymentTable = $("#paymentDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": appUrl + "Purchases/payments/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (paymentTable === "" ? 0 : paymentTable.page.info().page) + 1;
+                        d.RowsPerPage = paymentTable === "" ? 10 : paymentTable.page.info().length;
+                        d.SortByColumn = paymentTable === "" ? 2 : paymentTable.order()[0][0];
+                        d.SortDir = paymentTable === "" ? "asc" : paymentTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@PaymentRes.Date", "data": "Date",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@PaymentRes.Amount", "data": "Amount",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null) {
+                                return "";
+                            } else {
+                                if (full.SymbolPosition === '@SymbolPosition.BeforeAmount') {
+                                    return full.CurrencySymbol + " " + data.toFixed(2);
+                                } else {
+                                    return data.toFixed(2) + " " + full.CurrencySymbol;
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "title": "@PaymentRes.Vendor", "data": "VendorName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@PaymentRes.Category", "data": "CategoryName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@PaymentRes.Account", "data": "AccountName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-paymentId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-paymentId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            paymentTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var paymentId = $(this).attr("data-paymentId");
+                window.location.href = appUrl + "purchases/payments/create?id=" + paymentId;
+            });
+
+            paymentTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var paymentId = $(this).attr("data-paymentId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Purchases/Payments/Delete",
+                            "type": "POST",
+                            "data": { paymentId: paymentId },
+                            success: function (response) {
+                                if (response.StatusCode === 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        paymentTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        paymentTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

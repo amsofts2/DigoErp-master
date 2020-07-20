@@ -1,0 +1,135 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Banking.Transaction
+@using DigoErp.Service.Enums
+@{
+    ViewBag.Title = TransactionRes.Transactions;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Banking</a></li>
+        <li class="breadcrumb-item active">@TransactionRes.Transactions</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@TransactionRes.Transactions</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@TransactionRes.Transactions</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("Create", "Revenues",new {area ="sales"})">@TransactionRes.AddIncome</a>
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("Create", "Payments",new {area ="purchases"})">@TransactionRes.AddExpense</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="transactionDataTable" class="table table-striped table-bordered table-td-valign-middle"></table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+<script src="~/Scripts/moment.js"></script>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var transactionTable = $("#transactionDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url":appUrl+ "Banking/Transactions/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (transactionTable === "" ? 0 : transactionTable.page.info().page) + 1;
+                        d.RowsPerPage = transactionTable === "" ? 10 : transactionTable.page.info().length;
+                        d.SortByColumn = transactionTable === "" ? 2 : transactionTable.order()[0][0];
+                        d.SortDir = transactionTable === "" ? "asc" : transactionTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@TransactionRes.Date", "data": "Date",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                     {
+                        "title": "@TransactionRes.Account", "data": "AccountName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@TransactionRes.Type", "data": "TransactionTypeName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@TransactionRes.Category", "data": "CategoryName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@TransactionRes.Description", "data": "Description",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@TransactionRes.Amount", "data": "Amount",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null) {
+                                return "";
+                            } else {
+                                if (full.SymbolPosition === '@SymbolPosition.BeforeAmount') {
+                                    return full.CurrencySymbol + " " + data;
+                                } else {
+                                    return data + " " + full.CurrencySymbol;
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            if (row.TransactionType === 0) {
+                                return '<a href=' + appUrl + "sales/revenues/create/" + row.Id + ' class="btn btn-success btn-xs m-r-5 editBtn" data-transactionId=' + row.Id + ' ><i class="fa fa-edit"></i></a>';
+                            } else {
+                                return '<a href=' + appUrl + "purchases/payments/create/" + row.Id + ' class="btn btn-success btn-xs m-r-5 editBtn" data-transactionId=' + row.Id + ' ><i class="fa fa-edit"></i></a>';
+                            }
+                        }
+                    }
+                ]
+            });
+        })
+    </script>
+}

@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
+  <data name="Areyousure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="Banking" xml:space="preserve">
+    <value>Banking</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CancelDelete" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="CategoryAlreadyTaken" xml:space="preserve">
+    <value>CategoryAlreadyTaken</value>
+  </data>
+  <data name="CategoryManagement" xml:space="preserve">
+    <value>Category management</value>
+  </data>
+  <data name="ChangesNotSaved" xml:space="preserve">
+    <value>Changes not saved.Please try it again.</value>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>Common</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Done! It was succesfully deleted!</value>
+  </data>
+  <data name="DeletedSuccessfully1" xml:space="preserve">
+    <value>Done! It was succesfully deleted!</value>
+  </data>
+  <data name="DeleteErrorConcurrency" xml:space="preserve">
+    <value>Error in delete data from database Concurrency operation error</value>
+  </data>
+  <data name="DeleteErrorDB" xml:space="preserve">
+    <value>Error in delete data from database</value>
+  </data>
+  <data name="DeleteErrorDisposed" xml:space="preserve">
+    <value>Error in delete data from database Context or Connection has been disposed</value>
+  </data>
+  <data name="DeleteErrorInvalidOperation" xml:space="preserve">
+    <value>Error in delete data from database invalid operation happened</value>
+  </data>
+  <data name="DeleteErrorNotSupported" xml:space="preserve">
+    <value>Error in delete data from database operation not supported</value>
+  </data>
+  <data name="DeleteErrorValidation" xml:space="preserve">
+    <value>Error in delete data from  database Validation error on one of the columns</value>
+  </data>
+  <data name="EmailAlreadyTaken" xml:space="preserve">
+    <value>Email is already taken.</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="EnterKeyword" xml:space="preserve">
+    <value>Enter keyword</value>
+  </data>
+  <data name="GetErrorConcurrency" xml:space="preserve">
+    <value>Error in get data to database Concurrency operation error</value>
+  </data>
+  <data name="GetErrorDB" xml:space="preserve">
+    <value>Error in get data to database</value>
+  </data>
+  <data name="GetErrorDisposed" xml:space="preserve">
+    <value>Error in get data to database Context or Connection has been disposed</value>
+  </data>
+  <data name="GetErrorInvalidOperation" xml:space="preserve">
+    <value>Error in get data to database invalid operation happened</value>
+  </data>
+  <data name="GetErrorNotSupported" xml:space="preserve">
+    <value>Error in get data to database operation not supported</value>
+  </data>
+  <data name="GetErrorValidation" xml:space="preserve">
+    <value>Error in get data to database Validation error on one of the columns</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InsertErrorConcurrency" xml:space="preserve">
+    <value>Error in insert data to database Concurrency operation error</value>
+  </data>
+  <data name="InsertErrorDB" xml:space="preserve">
+    <value>Error in insert data to database</value>
+  </data>
+  <data name="InsertErrorDisposed" xml:space="preserve">
+    <value>Error in insert data to database Context or Connection has been disposed</value>
+  </data>
+  <data name="InsertErrorInvalidOperation" xml:space="preserve">
+    <value>Error in insert data to database invalid operation happened</value>
+  </data>
+  <data name="InsertErrorNotSupported" xml:space="preserve">
+    <value>Error in insert data to database operation not supported</value>
+  </data>
+  <data name="InsertErrorValidation" xml:space="preserve">
+    <value>Error in insert data to database Validation error on one of the columns</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="ItemAlreadyTaken" xml:space="preserve">
+    <value>Item Already Taken</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Navigation" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="PleaseLogin" xml:space="preserve">
+    <value>Please login</value>
+  </data>
+  <data name="PleaseSelectRestaurant" xml:space="preserve">
+    <value>Please select restaurant.</value>
+  </data>
+  <data name="POS" xml:space="preserve">
+    <value>POS</value>
+  </data>
+  <data name="PosAdmin" xml:space="preserve">
+    <value>POS Admin</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Purchase" xml:space="preserve">
+    <value>Purchase</value>
+  </data>
+  <data name="Purchases" xml:space="preserve">
+    <value>Purchases</value>
+  </data>
+  <data name="RoleAlreadyTaken" xml:space="preserve">
+    <value>RoleAlreadyTaken</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="SavedSuccessfully" xml:space="preserve">
+    <value>Done! It was succesfully saved!</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Please select branch.</value>
+  </data>
+  <data name="SelectOption" xml:space="preserve">
+    <value>--Select an option --</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Sign me in</value>
+  </data>
+  <data name="Signout" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="StockNotAvailable" xml:space="preserve">
+    <value>Required stock not available for</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>Done! It was succesfully updated!</value>
+  </data>
+  <data name="UpdateErrorConcurrency" xml:space="preserve">
+    <value>Error in update data to database Concurrency operation error</value>
+  </data>
+  <data name="UpdateErrorDB" xml:space="preserve">
+    <value>Error in update data to database</value>
+  </data>
+  <data name="UpdateErrorDisposed" xml:space="preserve">
+    <value>Error in update data to database Context or Connection has been disposed</value>
+  </data>
+  <data name="UpdateErrorInvalidOperation" xml:space="preserve">
+    <value>Error in update data to database invalid operation happened</value>
+  </data>
+  <data name="UpdateErrorNotSupported" xml:space="preserve">
+    <value>Error in update data to database operation not supported</value>
+  </data>
+  <data name="UpdateErrorValidation" xml:space="preserve">
+    <value>Error in update data to database Validation error on one of the columns</value>
+  </data>
+  <data name="UserNameLengthError" xml:space="preserve">
+    <value>The username must be more than 4 characters and less than 24 characters</value>
+  </data>
+  <data name="UserNameNotFound" xml:space="preserve">
+    <value>The username is required</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Vendor" xml:space="preserve">
+    <value>Vendor</value>
+  </data>
+  <data name="WantToDelete" xml:space="preserve">
+    <value>Please confirm. You are about to delete this request.</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="DRAFT" xml:space="preserve">
+    <value>DRAFT</value>
+  </data>
+  <data name="PAID" xml:space="preserve">
+    <value>PAID</value>
+  </data>
+  <data name="Accounting" xml:space="preserve">
+    <value>Accounting</value>
+  </data>
+  <data name="MangeRoles" xml:space="preserve">
+    <value>Mange roles</value>
+  </data>
+  <data name="SENT" xml:space="preserve">
+    <value>SENT</value>
+  </data>
+  <data name="AddPayment" xml:space="preserve">
+    <value>Add Payment</value>
+  </data>
+  <data name="DownloadPDF" xml:space="preserve">
+    <value>Download PDF</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MarkPaid" xml:space="preserve">
+    <value>Mark Paid</value>
+  </data>
+  <data name="MarkSent" xml:space="preserve">
+    <value>Mark Sent</value>
+  </data>
+  <data name="MoreActions" xml:space="preserve">
+    <value>More Actions</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="SendEmail" xml:space="preserve">
+    <value>Send Email</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+</root>

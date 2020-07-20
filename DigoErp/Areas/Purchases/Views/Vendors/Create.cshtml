@@ -1,0 +1,153 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Purchase
+@model DigoErp.ViewModels.VendorViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? VendorRes.EditVendor : VendorRes.NewVendor;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="VendorController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Purchases</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="vendorForm" id="vendorForm" data-parsley-validate="true" ng-submit="vm.save()">
+                        <input type="hidden" name="vendorId" id="vendorId" ng-model="vm.Id" value="@(Model.Id > 0 ? Model.Id : 0)" />
+                        <input type="hidden" name="Photo" id="Photo" ng-model="vm.Photo" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Name">@VendorRes.Name</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Name" name="Name" ng-model="vm.Name" placeholder="@VendorRes.EnterName">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Email">@VendorRes.Email</label>
+                                    <input type="email" data-parsley-required="true" class="form-control m-b-5" id="Email" name="Email" ng-model="vm.Email" placeholder="@VendorRes.EnterEmail">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="TaxNumber">@VendorRes.TaxNumber</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="TaxNumber" name="TaxNumber" ng-model="vm.TaxNumber" placeholder="@VendorRes.EnterTaxNumber">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="CurrencyId">@VendorRes.Currency</label>
+                                    <select class="form-control selectpicker" data-live-search="true" name="CurrencyId" id="CurrencyId" data-parsley-required="false" ng-model="vm.CurrencyId">
+                                        <option value="">@VendorRes.SelectCurrency</option>
+                                        @foreach (var currency in Model.Currencies)
+                                        {
+                                            <option value="@currency.Id">@currency.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="AccountNumber">@VendorRes.AccountNumber</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="AccountNumber" name="AccountNumber" ng-model="vm.AccountNumber" placeholder="@VendorRes.EnterAccountNumber">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="SadadNumber">@VendorRes.SadadNumber</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="SadadNumber" name="SadadNumber" ng-model="vm.SadadNumber" placeholder="@VendorRes.EnterSadadNumber">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="PhoneNumber">@VendorRes.PhoneNumber</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="PhoneNumber" name="PhoneNumber" ng-model="vm.PhoneNumber" placeholder="@VendorRes.EnterPhoneNumber">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Website">@VendorRes.Website</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Website" name="Website" ng-model="vm.Website" placeholder="@VendorRes.EnterWebsite">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Address">@VendorRes.Address</label>
+                                    <textarea id="Address" name="Address" class="form-control m-b-5" rows="3" cols="80" ng-model="vm.Address" placeholder="@VendorRes.EnterAddress"></textarea>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Logo">@VendorRes.Logo</label>
+                                    <input type="file" select-files-ng ng-model="fileArray" class="form-control m-b-5" id="Logo" placeholder="@VendorRes.SelectPicture">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Refrence">@VendorRes.Reference</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Refrence" name="Refrence" ng-model="vm.Refrence" placeholder="@VendorRes.EnterReference">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="switcher_checkbox_3">@VendorRes.IsEnabled</label>
+                                    <div class="switcher switcher-purple" style="display: block;">
+                                        <input type="checkbox" name="switcher_checkbox_3" id="switcher_checkbox_3" ng-model="vm.IsEnabled" checked="" value="1">
+                                        <label for="switcher_checkbox_3"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+    <script src="~/Scripts/Controllers/VendorController.js"></script>
+}

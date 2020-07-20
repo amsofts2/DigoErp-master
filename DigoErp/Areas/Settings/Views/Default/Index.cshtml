@@ -1,0 +1,136 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Banking.Transfers
+@using DigoErp.Resources.Settings.Defualt
+@model DigoErp.ViewModels.DefaultViewModel
+@{
+    ViewBag.Title = DefaultRes.Default;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="DefaultController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="defaultForm" id="defaultForm" data-parsley-validate="true" ng-submit="vm.save()">
+                        <input type="hidden" name="Id" id="Id" ng-model="vm.Id"/>
+                        <input type="hidden" name="Logo" id="Logo" ng-model="vm.Logo"/>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="AccountId">@DefaultRes.Account</label>
+                                    <select data-parsley-required="true" id="AccountId" name="AccountId" ng-model="vm.AccountId" class="form-control m-b-5 selectpicker" data-live-search="true">
+                                        <option value="">@DefaultRes.SelectAccount</option>
+                                        @foreach (var account in Model.Accounts)
+                                       {
+                                        <option value="@account.Id">@account.AccountName</option>
+                                       }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="CurrencyId">@DefaultRes.Currency</label>
+                                    <select data-parsley-required="true" id="CurrencyId" name="CurrencyId" ng-model="vm.CurrencyId" class="form-control m-b-5 selectpicker" data-live-search="true">
+                                        <option value="">@DefaultRes.SelectCurrency</option>
+                                        @foreach (var currency in Model.Currencies)
+                                        {
+                                            <option value="@currency.Id">@currency.Code</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="TaxId">@DefaultRes.Tax</label>
+                                    <select data-parsley-required="true" id="TaxId" name="TaxId" ng-model="vm.TaxId" class="form-control m-b-5 selectpicker" data-live-search="true">
+                                        <option value="">@DefaultRes.SelectTax</option>
+                                        @foreach (var tax in Model.Taxs)
+                                        {
+                                            <option value="@tax.Id">@tax.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="PaymentMethod">@DefaultRes.PaymentMethod</label>
+                                    <select data-parsley-required="true" id="PaymentMethod" name="PaymentMethod" ng-model="vm.PaymentMethod" class="form-control m-b-5 selectpicker" data-live-search="true">
+                                        <option value="">@DefaultRes.SelectPaymentMethod</option>
+                                        <option value="0">@TransferRes.Cash</option>
+                                        <option value="1">@TransferRes.BankTransfer</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Language">@DefaultRes.Language</label>
+                                    <select data-parsley-required="true" id="Language" name="Language" ng-model="vm.Language" class="form-control m-b-5 selectpicker" data-live-search="true">
+                                        <option value="">@DefaultRes.SelectLanguage</option>
+                                        <option value="en">@AppResource.English</option>
+                                        <option value="ar">العربية</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="RecordsPerPage">@DefaultRes.RecordsPerPage</label>
+                                    <select data-parsley-required="true" id="RecordsPerPage" name="RecordsPerPage" ng-model="vm.RecordsPerPage" class="form-control m-b-5 selectpicker" data-live-search="true">
+                                        <option value="">@DefaultRes.SelectRecordsPerPage</option>
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="file">@BranchRes.Logo</label>
+                                    <input type="file" select-files-ng ng-model="fileArray" class="form-control m-b-5" id="file">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+<script src="~/Scripts/Controllers/DefaultController.js"></script>
+}

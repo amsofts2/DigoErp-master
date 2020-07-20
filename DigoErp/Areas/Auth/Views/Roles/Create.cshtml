@@ -1,0 +1,68 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Role
+@model DigoErp.ViewModels.RoleViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? RoleRes.EditRole : RoleRes.NewRole;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="RoleController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@RoleRes.NewRole</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="roleForm" id="roleForm" data-parsley-validate="true" ng-submit="vm.saveForm()">
+                        <input type="hidden" name="roleId" id="roleId" ng-model="vm.Id" value="@(Model.Id > 0 ? Model.Id : 0)" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Name">@RoleRes.Name</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Name" name="Name" ng-model="vm.Name" placeholder="@RoleRes.EnterName">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Code">@RoleRes.Code</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="Code" name="Code" ng-model="vm.Code" placeholder="@RoleRes.EnterCode">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="BankAddress">@RoleRes.Description</label>
+                                    <textarea id="Description" name="Description" class="form-control m-b-5" rows="3" cols="80" ng-model="vm.Description" placeholder="@RoleRes.EnterDescription"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+
+    <script src="~/Scripts/Controllers/RoleController.js"></script>
+}
+

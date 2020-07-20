@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="72013dc016154b659a3f1f618f8de20f" Name="Diagram1" ZoomLevel="97">
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Branch" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Role" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_User" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_User_Tbl_Branch" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_User_Tbl_Role" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_ItemUnit" Width="1.5" PointX="3.375" PointY="5.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Item" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Vendor" Width="1.5" PointX="7.375" PointY="6.125" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Bill" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Bill1" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Currency" Width="1.5" PointX="3.125" PointY="9.125" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Vendor_Tbl_Currency" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Tax" Width="1.5" PointX="0.75" PointY="9.75" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Item_Tbl_Tax" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Account" Width="1.5" PointX="7.375" PointY="11.75" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Account_Tbl_Currency" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Category" Width="1.5" PointX="0.75" PointY="4.125" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Item_Tbl_Category" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Admin" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Book_seat" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.City" Width="1.5" PointX="9.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Fare" Width="1.5" PointX="11.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Passenger" Width="1.5" PointX="0.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Payment_info" Width="1.5" PointX="2.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Vehicle" Width="1.5" PointX="12.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Vehicle_Timing" Width="1.5" PointX="13.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Vehicle_Type" Width="1.5" PointX="12.75" PointY="8.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_InvoiceItem" Width="1.5" PointX="16.875" PointY="4.5" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Default" Width="1.5" PointX="12.625" PointY="12.25" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Default_Tbl_Account" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Default_Tbl_Currency" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Default_Tbl_Tax" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Default_Tbl_User" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Bill_Item" Width="1.5" PointX="9.625" PointY="6.75" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Customer" Width="1.5" PointX="9.875" PointY="0.625" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Customer_Tbl_Branch" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Customer_Tbl_Currency" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Transaction" Width="1.5" PointX="7.625" PointY="0.625" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Account" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Category" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Customer" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Vendor" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Invoice" Width="1.5" PointX="12.375" PointY="1.625" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Category" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Currency" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Customer" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_InvoiceItem_Tbl_Invoice" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Bill" Width="1.5" PointX="14.625" PointY="5.125" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Transfer" Width="1.5" PointX="9.625" PointY="12.375" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Transfers_Tbl_Account" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Transfers_Tbl_Account1" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Bill_Item_Tbl_Bill" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Category" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Currency" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Vendor" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Bill" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Reconciliation" Width="2.375" PointX="14.625" PointY="1.125" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Reconciliation_Tbl_Account" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Reconciliation_Tbl_User" />
+        <EntityTypeShape EntityType="DigoErp_DbModel.Tbl_Reconciliation_Transaction" Width="2.625" PointX="17.25" PointY="0.875" />
+        <AssociationConnector Association="DigoErp_DbModel.FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

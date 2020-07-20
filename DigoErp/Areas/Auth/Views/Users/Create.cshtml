@@ -1,0 +1,138 @@
+﻿@using DigoErp.Resources.App_Resources
+@model DigoErp.ViewModels.UserViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? UserRes.EditUser : UserRes.NewUser;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- begin #content -->
+<div id="content" class="content" ng-controller="UserController as vm">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@ViewBag.Title</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-lg-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ViewBag.Title</h4>
+                </div>
+                <div class="panel-body">
+                    <form name="userForm" id="userForm" data-parsley-validate="true" ng-submit="vm.saveForm()">
+                        <input type="hidden" name="userId" id="userId" ng-model="vm.Id" value="@(Model.Id > 0 ? Model.Id : 0)" />
+                        <input type="hidden" name="userPhoto" id="userPhoto" ng-model="vm.Photo" value="" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Name">@UserRes.Name</label>
+                                    <input type="text" data-parsley-required="true" class="form-control m-b-5" id="FullName" name="FullName" ng-model="vm.FullName" placeholder="@UserRes.Entername">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Email">@UserRes.Email</label>
+                                    <input type="email" data-parsley-required="true" ng-disabled="vm.whenEdit" class="form-control m-b-5" id="Email" name="Email" ng-model="vm.Email" placeholder="@UserRes.Enteremail">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Password">@UserRes.Password</label>
+                                    <input type="password" data-parsley-required="true" class="form-control m-b-5" id="Password" ng-model="vm.Password" placeholder="@UserRes.EnterPassword">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="ConfirmPassword">@UserRes.PasswordConfirmation</label>
+                                    <input type="password" data-parsley-required="true" data-parsley-equalto="#Password" class="form-control m-b-5" id="ConfirmPassword" name="ConfirmPassword" ng-model="vm.ConfirmPassword" placeholder="@UserRes.ConfirmPassword">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="BranchId">@UserRes.Branch</label>
+                                    <select class="form-control selectpicker" data-live-search="true" name="BranchId" id="BranchId" data-parsley-required="true" ng-model="vm.BranchId">
+                                        <option value="">@AppResource.SelectOption</option>
+                                        @foreach (var branch in Model.Branches)
+                                        {
+                                            <option value="@branch.Id">@branch.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="RoleId">@UserRes.Role</label>
+                                    <select class="form-control selectpicker" data-live-search="true" id="RoleId" name="RoleId" data-parsley-required="true" ng-model="vm.RoleId">
+                                        <option value="">@AppResource.SelectOption</option>
+                                        @foreach (var role in Model.Roles)
+                                        {
+                                            <option value="@role.Id">@role.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Language">@UserRes.Language</label>
+                                    <select class="form-control selectpicker" data-live-search="true" name="Language" id="Language" data-parsley-required="true" ng-model="vm.Language">
+                                        <option value="">@UserRes.SelectLanguage</option>
+                                        <option value="en">@AppResource.English</option>
+                                        <option value="ar">العربية</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="LandingPage">@UserRes.LandingPage</label>
+                                    <select class="form-control selectpicker" data-live-search="true" id="LandingPage" name="LandingPage" ng-model="vm.LandingPage">
+                                        <option value="">@AppResource.SelectOption</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="switcher_checkbox_3">@UserRes.Enabled</label>
+                                    <div class="switcher switcher-purple" style="display: block;">
+                                        <input type="checkbox" name="switcher_checkbox_3" id="switcher_checkbox_3" ng-model="vm.IsEnabled" checked="" value="1">
+                                        <label for="switcher_checkbox_3"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-b-10 p-t-5">
+                                    <label for="Logo">@UserRes.Picture</label>
+                                    <input type="file" select-files-ng ng-model="fileArray" class="form-control m-b-5" id="Logo" placeholder="@UserRes.SelectPicture">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@AppResource.Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+@section scripts{
+    <script src="~/Scripts/Controllers/userController.js"></script>
+}

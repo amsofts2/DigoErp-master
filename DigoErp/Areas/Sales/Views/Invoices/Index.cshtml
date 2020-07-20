@@ -1,0 +1,191 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Sales
+@using DigoErp.Service.Enums
+@{
+    ViewBag.Title = InvoiceRes.Invoices;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Sales</a></li>
+        <li class="breadcrumb-item active">@InvoiceRes.Invoices</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@InvoiceRes.Invoices</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@InvoiceRes.Invoices</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("create", "Invoices",new {area ="Sales"})">@InvoiceRes.AddNew</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="invoiceDataTable" class="table table-striped table-bordered table-td-valign-middle"></table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var invoiceTable = $("#invoiceDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": appUrl + "Sales/Invoices/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (invoiceTable === "" ? 0 : invoiceTable.page.info().page) + 1;
+                        d.RowsPerPage = invoiceTable === "" ? 10 : invoiceTable.page.info().length;
+                        d.SortByColumn = invoiceTable === "" ? 2 : invoiceTable.order()[0][0];
+                        d.SortDir = invoiceTable === "" ? "asc" : invoiceTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@InvoiceRes.Number", "data": "InvoiceNumber"
+                    },
+                    {
+                        "title": "@InvoiceRes.Customer", "data": "CustomerName",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@InvoiceRes.Amount", "data": "GrandTotal",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null) {
+                                return "";
+                            } else {
+                                if (full.SymbolPosition === '@SymbolPosition.BeforeAmount') {
+                                    return full.CurrencySymbol + " " + data;
+                                } else {
+                                    return data + " " + full.CurrencySymbol;
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "title": "@InvoiceRes.InvoiceDate", "data": "DueDate",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                   {
+                       "title": "@InvoiceRes.DueDate", "data": "DueDate",
+                       "render": function (data, type, full, meta) {
+                           if (typeof data === "undefined" || data === null)
+                               return "";
+                           return data;
+                       }
+                   },
+                   {
+                       "title": "@InvoiceRes.Status", "data": "Status",
+                       "render": function (data, type, full, meta) {
+                           if (typeof data === "undefined" || data === null) {
+                               return "";
+                           } else {
+                               if (data === "@InvoiceStatus.DRAFT") {
+                                   return '<span class="badge badge-pill badge-primary">' + '@AppResource.ResourceManager.GetString(InvoiceStatus.DRAFT.ToString())' + '</span>';
+                               }
+                               else if (data === "@InvoiceStatus.PAID") {
+                                   return '<span class="badge badge-pill badge-green">' + '@AppResource.ResourceManager.GetString(InvoiceStatus.PAID.ToString())' + '</span>';
+                               }
+                               else if (data === "@InvoiceStatus.SENT") {
+                                   return '<span class="badge badge-pill badge-danger">' + '@AppResource.ResourceManager.GetString(InvoiceStatus.SENT.ToString())' + '</span>';
+                               }
+                               else if (data === "@InvoiceStatus.Cancelled") {
+                                   return '<span class="badge badge-pill badge-dark">' + '@AppResource.ResourceManager.GetString(InvoiceStatus.Cancelled.ToString())' + '</span>';
+                               }
+                               else {
+                                   return "";
+                               }
+                           }
+                       }
+                   },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-invoiceId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                '<a href=' + appUrl + "sales/invoices/details/" + row.Id + ' class="btn btn-dark btn-xs m-r-5 viewBtn" ><i class="fa fa-eye"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-invoiceId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            invoiceTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var invoiceId = $(this).attr("data-invoiceId");
+                window.location.href = appUrl + "sales/invoices/create/" + invoiceId;
+            });
+
+            invoiceTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var invoiceId = $(this).attr("data-invoiceId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Sales/Invoices/Delete",
+                            "type": "POST",
+                            "data": { invoiceId: invoiceId },
+                            success: function (response) {
+                                if (response.StatusCode === 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        invoiceTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        invoiceTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

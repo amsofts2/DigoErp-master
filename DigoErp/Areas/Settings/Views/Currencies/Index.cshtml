@@ -1,0 +1,151 @@
+﻿@using DigoErp.Resources.App_Resources
+@using DigoErp.Resources.Settings.Category
+@using DigoErp.Resources.Settings.Currencies
+@{
+    ViewBag.Title = CurrencyRes.Currencies;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:;">@AppResource.Settings</a></li>
+        <li class="breadcrumb-item active">@CurrencyRes.Currencies</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">@CurrencyRes.Currencies</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <h4 class="panel-title">@CurrencyRes.Currencies</h4>
+            <div class="panel-heading-btn">
+                <a class="btn btn-primary btn-xs m-r-5 pull-right" href="@Url.Action("Create", "Currencies",new {area ="Settings"})">@CurrencyRes.NewCurrency</a>
+            </div>
+        </div>
+        <!-- end panel-heading -->
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="currencyDataTable" class="table table-striped table-bordered table-td-valign-middle">
+            </table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var appUrl = $("#appURL").val();
+            var currencyDataTable = $("#currencyDataTable").DataTable({
+                "language": {
+                    "url": $("#currentLang").val() === "ar" ? appUrl + "assets/plugins/datatables.net/i18n/Arabic.json" : appUrl + "assets/plugins/datatables.net/i18n/English.json"
+                },
+                "pageLength": $("#recordsPerPage").val() > 0 ? $("#recordsPerPage").val() : 10,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": appUrl+ "Settings/Currencies/Index",
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (currencyDataTable === "" ? 0 : currencyDataTable.page.info().page) + 1;
+                        d.RowsPerPage = currencyDataTable === "" ? 10 : currencyDataTable.page.info().length;
+                        d.SortByColumn = currencyDataTable === "" ? 2 : currencyDataTable.order()[0][0];
+                        d.SortDir = currencyDataTable === "" ? "asc" : currencyDataTable.order()[0][1];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+
+                    {
+                        "title": "@CurrencyRes.Name", "data": "Name"
+                    },
+                    {
+                        "title": "@CurrencyRes.Code", "data": "Code",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return "";
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@CurrencyRes.Rate", "data": "Rate",
+                        "render": function (data, type, full, meta) {
+                            if (typeof data === "undefined" || data === null)
+                                return '';
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "@CurrencyRes.Enabled", "data": "Enabled",
+                        "render": function (data, type, full, meta) {
+                            return data;
+                        }
+                    },
+                    {
+                        "title": "Action",
+                        "sortable": false,
+                        "render": function (data, type, row) {
+                            return '<a href="#" class="btn btn-success btn-xs m-r-5 editBtn" data-currencyId=' + row.Id + ' ><i class="fa fa-edit"></i></a>' +
+                                ' <a class="btn btn-danger btn-xs m-r-5 deleteBtn" data-currencyId=' + row.Id + ' href="#"><i class="fa fa-trash"></i></a>';
+                        }
+                    }
+                ]
+            });
+
+            currencyDataTable.on("click", ".editBtn", function (evt) {
+                evt.preventDefault();
+                var currencyId = $(this).attr("data-currencyId");
+                window.location.href = appUrl + "settings/currencies/create/" + currencyId;
+            });
+
+            currencyDataTable.on("click", ".deleteBtn", function (evt) {
+                evt.preventDefault();
+                var currencyId = $(this).attr("data-currencyId");
+                swal({
+                    title: '',
+                    text: "@AppResource.WantToDelete",
+                    icon: 'warning',
+                    dangerMode: true,
+                    buttons: {
+                        confirm: "@AppResource.ConfirmDelete",
+                        cancel: '@AppResource.CancelDelete'
+                    }
+                }).then(function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            "url": "/Settings/Currencies/Delete",
+                            "type": "POST",
+                            "data": { currencyId: currencyId },
+                            success: function (response) {
+                                if (response.StatusCode == 200) {
+                                    swal(response.MessageAr, {
+                                        icon: "info"
+                                    }).then((val) => {
+                                        currencyDataTable.draw();
+                                    });
+                                } else {
+                                    swal(response.MessageAr, {
+                                        icon: "error"
+                                    }).then((val) => {
+                                        currencyDataTable.draw();
+                                    });
+                                }
+                            },
+                            error: function (httpResult, err, status) {
+
+                            }
+                        });
+                    }
+                }, function (dismiss) {
+                });
+            });
+        })
+    </script>
+}

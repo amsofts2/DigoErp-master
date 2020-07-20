@@ -1,0 +1,2103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DigoErp_DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tbl_Account">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Number" Type="nvarchar" MaxLength="50" />
+          <Property Name="IBANNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CurrencyId" Type="bigint" />
+          <Property Name="OpeningBalance" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="500" />
+          <Property Name="BankPhone" Type="nvarchar" MaxLength="500" />
+          <Property Name="BankAddress" Type="nvarchar" MaxLength="500" />
+          <Property Name="DefaultAccount" Type="bit" />
+          <Property Name="IsEnabled" Type="bit" />
+          <Property Name="Updated_At" Type="datetime" />
+          <Property Name="Created_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Bill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VendorId" Type="bigint" />
+          <Property Name="CurrencyId" Type="bigint" />
+          <Property Name="BillDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="DueDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="Number" Type="nvarchar" MaxLength="500" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="OrderNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="CategoryId" Type="bigint" />
+          <Property Name="Recurring" Type="int" />
+          <Property Name="Attachment" Type="nvarchar" MaxLength="500" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+          <Property Name="SubTotal" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Discount_Percentage" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Tax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GrandTotal" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Tbl_Bill_Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bill_Id" Type="bigint" />
+          <Property Name="ItemId" Type="bigint" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TaxId" Type="bigint" />
+          <Property Name="Tax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Branch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="TaxNumber" Type="nvarchar" MaxLength="150" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Logo" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Color" Type="nvarchar" MaxLength="500" />
+          <Property Name="Type" Type="int" />
+          <Property Name="Enabled" Type="bit" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Currency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" />
+          <Property Name="Rate" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Precision" Type="int" />
+          <Property Name="Symbol" Type="nvarchar" MaxLength="50" />
+          <Property Name="SymbolPosition" Type="nvarchar" MaxLength="50" />
+          <Property Name="DecimalMark" Type="nvarchar" MaxLength="20" />
+          <Property Name="Thousands_Separator" Type="nvarchar" MaxLength="50" />
+          <Property Name="Enabled" Type="bit" />
+          <Property Name="Default_Currency" Type="bit" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="TaxNumber" Type="nvarchar" MaxLength="150" />
+          <Property Name="CurrencyId" Type="bigint" />
+          <Property Name="Website" Type="nvarchar" MaxLength="500" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="IsEnabled" Type="bit" />
+          <Property Name="Refrence" Type="nvarchar" MaxLength="250" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+          <Property Name="CanLogin" Type="bit" />
+          <Property Name="BranchId" Type="int" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="SadadNumber" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tbl_Default">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountId" Type="bigint" />
+          <Property Name="CurrencyId" Type="bigint" />
+          <Property Name="TaxId" Type="bigint" />
+          <Property Name="PaymentMethod" Type="int" />
+          <Property Name="Language" Type="nvarchar" MaxLength="20" />
+          <Property Name="RecordsPerPage" Type="int" />
+          <Property Name="Logo" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedBy" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Tbl_Invoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" />
+          <Property Name="CurrencyId" Type="bigint" />
+          <Property Name="InvoiceDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="DueDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="Footer" Type="nvarchar(max)" />
+          <Property Name="CategoryId" Type="bigint" />
+          <Property Name="Recurring" Type="int" />
+          <Property Name="Attachment" Type="nvarchar" MaxLength="500" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+          <Property Name="SubTotal" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Discount_Percentage" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Tax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GrandTotal" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Tbl_InvoiceItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceId" Type="bigint" />
+          <Property Name="ItemId" Type="bigint" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TaxId" Type="bigint" />
+          <Property Name="Tax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="CategoryId" Type="bigint" />
+          <Property Name="SalePrice" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="PurchasePrice" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="IsEnabled" Type="bit" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+          <Property Name="TaxId" Type="bigint" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Picture" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Tbl_ItemUnit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="NameAr" Type="nvarchar" MaxLength="250" />
+          <Property Name="NameEn" Type="nvarchar" MaxLength="250" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Reconciliation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountId" Type="bigint" />
+          <Property Name="StartDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="EndDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="ClosingBalance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="Created_By" Type="bigint" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Reconciliation_Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReconciliationId" Type="bigint" />
+          <Property Name="Date" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Contact" Type="nvarchar" MaxLength="250" />
+          <Property Name="Deposit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Withdrawal" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IsClear" Type="bit" />
+        </EntityType>
+        <EntityType Name="Tbl_Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" />
+          <Property Name="Code" Type="nvarchar" MaxLength="256" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Tbl_Tax">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Rate" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="Enabled" Type="bit" />
+        </EntityType>
+        <EntityType Name="Tbl_Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="nvarchar" MaxLength="50" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="AccountId" Type="bigint" />
+          <Property Name="CustomerId" Type="bigint" />
+          <Property Name="VendorId" Type="bigint" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="CategoryId" Type="bigint" />
+          <Property Name="Recurring" Type="int" />
+          <Property Name="PaymentMethod" Type="int" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="500" />
+          <Property Name="Attachment" Type="nvarchar" MaxLength="500" />
+          <Property Name="Invoice" Type="bigint" />
+          <Property Name="BillId" Type="bigint" />
+          <Property Name="TransactionType" Type="int" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Transfer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FromAccount" Type="bigint" />
+          <Property Name="ToAccount" Type="bigint" />
+          <Property Name="Amount" Type="nvarchar" MaxLength="500" />
+          <Property Name="Date" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="PaymentMethod" Type="int" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="500" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="BranchId" Type="int" />
+          <Property Name="RoleId" Type="int" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="150" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="ResetPasswordCode" Type="nvarchar(max)" />
+          <Property Name="Language" Type="nvarchar" MaxLength="20" />
+          <Property Name="LandingPage" Type="nvarchar" MaxLength="20" />
+          <Property Name="IsEnabled" Type="bit" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tbl_Vendor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="UnPaid" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="IsEnabled" Type="bit" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Updated_At" Type="datetime" />
+          <Property Name="TaxNumber" Type="nvarchar(max)" />
+          <Property Name="CurrencyId" Type="bigint" />
+          <Property Name="Website" Type="nvarchar" MaxLength="500" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="500" />
+          <Property Name="Refrence" Type="nvarchar" MaxLength="500" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="SadadNumber" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Tbl_Account_Tbl_Currency">
+          <End Role="Tbl_Currency" Type="Self.Tbl_Currency" Multiplicity="0..1" />
+          <End Role="Tbl_Account" Type="Self.Tbl_Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Account">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Bill_Item_Tbl_Bill">
+          <End Role="Tbl_Bill" Type="Self.Tbl_Bill" Multiplicity="0..1" />
+          <End Role="Tbl_Bill_Item" Type="Self.Tbl_Bill_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Bill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Bill_Item">
+              <PropertyRef Name="Bill_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Bill_Tbl_Category">
+          <End Role="Tbl_Category" Type="Self.Tbl_Category" Multiplicity="0..1" />
+          <End Role="Tbl_Bill" Type="Self.Tbl_Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Bill">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Bill_Tbl_Currency">
+          <End Role="Tbl_Currency" Type="Self.Tbl_Currency" Multiplicity="0..1" />
+          <End Role="Tbl_Bill" Type="Self.Tbl_Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Bill">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Bill_Tbl_Vendor">
+          <End Role="Tbl_Vendor" Type="Self.Tbl_Vendor" Multiplicity="0..1" />
+          <End Role="Tbl_Bill" Type="Self.Tbl_Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Vendor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Bill">
+              <PropertyRef Name="VendorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Customer_Tbl_Branch">
+          <End Role="Tbl_Branch" Type="Self.Tbl_Branch" Multiplicity="0..1" />
+          <End Role="Tbl_Customer" Type="Self.Tbl_Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Branch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Customer">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Customer_Tbl_Currency">
+          <End Role="Tbl_Currency" Type="Self.Tbl_Currency" Multiplicity="0..1" />
+          <End Role="Tbl_Customer" Type="Self.Tbl_Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Customer">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Default_Tbl_Account">
+          <End Role="Tbl_Account" Type="Self.Tbl_Account" Multiplicity="0..1" />
+          <End Role="Tbl_Default" Type="Self.Tbl_Default" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Default">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Default_Tbl_Currency">
+          <End Role="Tbl_Currency" Type="Self.Tbl_Currency" Multiplicity="0..1" />
+          <End Role="Tbl_Default" Type="Self.Tbl_Default" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Default">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Default_Tbl_Tax">
+          <End Role="Tbl_Tax" Type="Self.Tbl_Tax" Multiplicity="0..1" />
+          <End Role="Tbl_Default" Type="Self.Tbl_Default" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Tax">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Default">
+              <PropertyRef Name="TaxId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Default_Tbl_User">
+          <End Role="Tbl_User" Type="Self.Tbl_User" Multiplicity="0..1" />
+          <End Role="Tbl_Default" Type="Self.Tbl_Default" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Default">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Invoice_Tbl_Category">
+          <End Role="Tbl_Category" Type="Self.Tbl_Category" Multiplicity="0..1" />
+          <End Role="Tbl_Invoice" Type="Self.Tbl_Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Invoice">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Invoice_Tbl_Currency">
+          <End Role="Tbl_Currency" Type="Self.Tbl_Currency" Multiplicity="0..1" />
+          <End Role="Tbl_Invoice" Type="Self.Tbl_Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Invoice">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Invoice_Tbl_Customer">
+          <End Role="Tbl_Customer" Type="Self.Tbl_Customer" Multiplicity="0..1" />
+          <End Role="Tbl_Invoice" Type="Self.Tbl_Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Invoice">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_InvoiceItem_Tbl_Invoice">
+          <End Role="Tbl_Invoice" Type="Self.Tbl_Invoice" Multiplicity="0..1" />
+          <End Role="Tbl_InvoiceItem" Type="Self.Tbl_InvoiceItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Invoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_InvoiceItem">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Item_Tbl_Category">
+          <End Role="Tbl_Category" Type="Self.Tbl_Category" Multiplicity="0..1" />
+          <End Role="Tbl_Item" Type="Self.Tbl_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Item">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Item_Tbl_Tax">
+          <End Role="Tbl_Tax" Type="Self.Tbl_Tax" Multiplicity="0..1" />
+          <End Role="Tbl_Item" Type="Self.Tbl_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Tax">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Item">
+              <PropertyRef Name="TaxId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Reconciliation_Tbl_Account">
+          <End Role="Tbl_Account" Type="Self.Tbl_Account" Multiplicity="0..1" />
+          <End Role="Tbl_Reconciliation" Type="Self.Tbl_Reconciliation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Reconciliation">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Reconciliation_Tbl_User">
+          <End Role="Tbl_User" Type="Self.Tbl_User" Multiplicity="0..1" />
+          <End Role="Tbl_Reconciliation" Type="Self.Tbl_Reconciliation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Reconciliation">
+              <PropertyRef Name="Created_By" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation">
+          <End Role="Tbl_Reconciliation" Type="Self.Tbl_Reconciliation" Multiplicity="0..1" />
+          <End Role="Tbl_Reconciliation_Transaction" Type="Self.Tbl_Reconciliation_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Reconciliation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Reconciliation_Transaction">
+              <PropertyRef Name="ReconciliationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Account">
+          <End Role="Tbl_Account" Type="Self.Tbl_Account" Multiplicity="0..1" />
+          <End Role="Tbl_Transaction" Type="Self.Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Bill">
+          <End Role="Tbl_Bill" Type="Self.Tbl_Bill" Multiplicity="0..1" />
+          <End Role="Tbl_Transaction" Type="Self.Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Bill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Category">
+          <End Role="Tbl_Category" Type="Self.Tbl_Category" Multiplicity="0..1" />
+          <End Role="Tbl_Transaction" Type="Self.Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Customer">
+          <End Role="Tbl_Customer" Type="Self.Tbl_Customer" Multiplicity="0..1" />
+          <End Role="Tbl_Transaction" Type="Self.Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Vendor">
+          <End Role="Tbl_Vendor" Type="Self.Tbl_Vendor" Multiplicity="0..1" />
+          <End Role="Tbl_Transaction" Type="Self.Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Vendor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="VendorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transfers_Tbl_Account">
+          <End Role="Tbl_Account" Type="Self.Tbl_Account" Multiplicity="0..1" />
+          <End Role="Tbl_Transfer" Type="Self.Tbl_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transfer">
+              <PropertyRef Name="FromAccount" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transfers_Tbl_Account1">
+          <End Role="Tbl_Account" Type="Self.Tbl_Account" Multiplicity="0..1" />
+          <End Role="Tbl_Transfer" Type="Self.Tbl_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transfer">
+              <PropertyRef Name="ToAccount" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_User_Tbl_Branch">
+          <End Role="Tbl_Branch" Type="Self.Tbl_Branch" Multiplicity="0..1" />
+          <End Role="Tbl_User" Type="Self.Tbl_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Branch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_User">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_User_Tbl_Role">
+          <End Role="Tbl_Role" Type="Self.Tbl_Role" Multiplicity="0..1" />
+          <End Role="Tbl_User" Type="Self.Tbl_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Vendor_Tbl_Currency">
+          <End Role="Tbl_Currency" Type="Self.Tbl_Currency" Multiplicity="0..1" />
+          <End Role="Tbl_Vendor" Type="Self.Tbl_Vendor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Vendor">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DigoErp_DbModelStoreContainer">
+          <EntitySet Name="Tbl_Account" EntityType="Self.Tbl_Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Bill" EntityType="Self.Tbl_Bill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Bill_Item" EntityType="Self.Tbl_Bill_Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Branch" EntityType="Self.Tbl_Branch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Category" EntityType="Self.Tbl_Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Currency" EntityType="Self.Tbl_Currency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Customer" EntityType="Self.Tbl_Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Default" EntityType="Self.Tbl_Default" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Invoice" EntityType="Self.Tbl_Invoice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_InvoiceItem" EntityType="Self.Tbl_InvoiceItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Item" EntityType="Self.Tbl_Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_ItemUnit" EntityType="Self.Tbl_ItemUnit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Reconciliation" EntityType="Self.Tbl_Reconciliation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Reconciliation_Transaction" EntityType="Self.Tbl_Reconciliation_Transaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Role" EntityType="Self.Tbl_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Tax" EntityType="Self.Tbl_Tax" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Transaction" EntityType="Self.Tbl_Transaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Transfer" EntityType="Self.Tbl_Transfer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_User" EntityType="Self.Tbl_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Vendor" EntityType="Self.Tbl_Vendor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tbl_Account_Tbl_Currency" Association="Self.FK_Tbl_Account_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Bill_Item_Tbl_Bill" Association="Self.FK_Tbl_Bill_Item_Tbl_Bill">
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+            <End Role="Tbl_Bill_Item" EntitySet="Tbl_Bill_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Bill_Tbl_Category" Association="Self.FK_Tbl_Bill_Tbl_Category">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Bill_Tbl_Currency" Association="Self.FK_Tbl_Bill_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Bill_Tbl_Vendor" Association="Self.FK_Tbl_Bill_Tbl_Vendor">
+            <End Role="Tbl_Vendor" EntitySet="Tbl_Vendor" />
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Customer_Tbl_Branch" Association="Self.FK_Tbl_Customer_Tbl_Branch">
+            <End Role="Tbl_Branch" EntitySet="Tbl_Branch" />
+            <End Role="Tbl_Customer" EntitySet="Tbl_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Customer_Tbl_Currency" Association="Self.FK_Tbl_Customer_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Customer" EntitySet="Tbl_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Default_Tbl_Account" Association="Self.FK_Tbl_Default_Tbl_Account">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Default" EntitySet="Tbl_Default" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Default_Tbl_Currency" Association="Self.FK_Tbl_Default_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Default" EntitySet="Tbl_Default" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Default_Tbl_Tax" Association="Self.FK_Tbl_Default_Tbl_Tax">
+            <End Role="Tbl_Tax" EntitySet="Tbl_Tax" />
+            <End Role="Tbl_Default" EntitySet="Tbl_Default" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Default_Tbl_User" Association="Self.FK_Tbl_Default_Tbl_User">
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+            <End Role="Tbl_Default" EntitySet="Tbl_Default" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Invoice_Tbl_Category" Association="Self.FK_Tbl_Invoice_Tbl_Category">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Invoice" EntitySet="Tbl_Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Invoice_Tbl_Currency" Association="Self.FK_Tbl_Invoice_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Invoice" EntitySet="Tbl_Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Invoice_Tbl_Customer" Association="Self.FK_Tbl_Invoice_Tbl_Customer">
+            <End Role="Tbl_Customer" EntitySet="Tbl_Customer" />
+            <End Role="Tbl_Invoice" EntitySet="Tbl_Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_InvoiceItem_Tbl_Invoice" Association="Self.FK_Tbl_InvoiceItem_Tbl_Invoice">
+            <End Role="Tbl_Invoice" EntitySet="Tbl_Invoice" />
+            <End Role="Tbl_InvoiceItem" EntitySet="Tbl_InvoiceItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Item_Tbl_Category" Association="Self.FK_Tbl_Item_Tbl_Category">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Item" EntitySet="Tbl_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Item_Tbl_Tax" Association="Self.FK_Tbl_Item_Tbl_Tax">
+            <End Role="Tbl_Tax" EntitySet="Tbl_Tax" />
+            <End Role="Tbl_Item" EntitySet="Tbl_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Reconciliation_Tbl_Account" Association="Self.FK_Tbl_Reconciliation_Tbl_Account">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Reconciliation" EntitySet="Tbl_Reconciliation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Reconciliation_Tbl_User" Association="Self.FK_Tbl_Reconciliation_Tbl_User">
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+            <End Role="Tbl_Reconciliation" EntitySet="Tbl_Reconciliation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation" Association="Self.FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation">
+            <End Role="Tbl_Reconciliation" EntitySet="Tbl_Reconciliation" />
+            <End Role="Tbl_Reconciliation_Transaction" EntitySet="Tbl_Reconciliation_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Account" Association="Self.FK_Tbl_Transaction_Tbl_Account">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Bill" Association="Self.FK_Tbl_Transaction_Tbl_Bill">
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Category" Association="Self.FK_Tbl_Transaction_Tbl_Category">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Customer" Association="Self.FK_Tbl_Transaction_Tbl_Customer">
+            <End Role="Tbl_Customer" EntitySet="Tbl_Customer" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Vendor" Association="Self.FK_Tbl_Transaction_Tbl_Vendor">
+            <End Role="Tbl_Vendor" EntitySet="Tbl_Vendor" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transfers_Tbl_Account" Association="Self.FK_Tbl_Transfers_Tbl_Account">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Transfer" EntitySet="Tbl_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transfers_Tbl_Account1" Association="Self.FK_Tbl_Transfers_Tbl_Account1">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Transfer" EntitySet="Tbl_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_User_Tbl_Branch" Association="Self.FK_Tbl_User_Tbl_Branch">
+            <End Role="Tbl_Branch" EntitySet="Tbl_Branch" />
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_User_Tbl_Role" Association="Self.FK_Tbl_User_Tbl_Role">
+            <End Role="Tbl_Role" EntitySet="Tbl_Role" />
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Vendor_Tbl_Currency" Association="Self.FK_Tbl_Vendor_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Vendor" EntitySet="Tbl_Vendor" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DigoErp_DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DigoErp_Db" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tbl_Branch" EntityType="DigoErp_DbModel.Tbl_Branch" />
+          <EntitySet Name="Tbl_Role" EntityType="DigoErp_DbModel.Tbl_Role" />
+          <EntitySet Name="Tbl_User" EntityType="DigoErp_DbModel.Tbl_User" />
+          <AssociationSet Name="FK_Tbl_User_Tbl_Branch" Association="DigoErp_DbModel.FK_Tbl_User_Tbl_Branch">
+            <End Role="Tbl_Branch" EntitySet="Tbl_Branch" />
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_User_Tbl_Role" Association="DigoErp_DbModel.FK_Tbl_User_Tbl_Role">
+            <End Role="Tbl_Role" EntitySet="Tbl_Role" />
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_ItemUnit" EntityType="DigoErp_DbModel.Tbl_ItemUnit" />
+          <EntitySet Name="Tbl_Item" EntityType="DigoErp_DbModel.Tbl_Item" />
+          <EntitySet Name="Tbl_Vendor" EntityType="DigoErp_DbModel.Tbl_Vendor" />
+          <EntitySet Name="Tbl_Currency" EntityType="DigoErp_DbModel.Tbl_Currency" />
+          <AssociationSet Name="FK_Tbl_Vendor_Tbl_Currency" Association="DigoErp_DbModel.FK_Tbl_Vendor_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Vendor" EntitySet="Tbl_Vendor" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Tax" EntityType="DigoErp_DbModel.Tbl_Tax" />
+          <AssociationSet Name="FK_Tbl_Item_Tbl_Tax" Association="DigoErp_DbModel.FK_Tbl_Item_Tbl_Tax">
+            <End Role="Tbl_Tax" EntitySet="Tbl_Tax" />
+            <End Role="Tbl_Item" EntitySet="Tbl_Item" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Account" EntityType="DigoErp_DbModel.Tbl_Account" />
+          <AssociationSet Name="FK_Tbl_Account_Tbl_Currency" Association="DigoErp_DbModel.FK_Tbl_Account_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Category" EntityType="DigoErp_DbModel.Tbl_Category" />
+          <AssociationSet Name="FK_Tbl_Item_Tbl_Category" Association="DigoErp_DbModel.FK_Tbl_Item_Tbl_Category">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Item" EntitySet="Tbl_Item" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_InvoiceItem" EntityType="DigoErp_DbModel.Tbl_InvoiceItem" />
+          <EntitySet Name="Tbl_Default" EntityType="DigoErp_DbModel.Tbl_Default" />
+          <AssociationSet Name="FK_Tbl_Default_Tbl_Account" Association="DigoErp_DbModel.FK_Tbl_Default_Tbl_Account">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Default" EntitySet="Tbl_Default" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Default_Tbl_Currency" Association="DigoErp_DbModel.FK_Tbl_Default_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Default" EntitySet="Tbl_Default" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Default_Tbl_Tax" Association="DigoErp_DbModel.FK_Tbl_Default_Tbl_Tax">
+            <End Role="Tbl_Tax" EntitySet="Tbl_Tax" />
+            <End Role="Tbl_Default" EntitySet="Tbl_Default" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Default_Tbl_User" Association="DigoErp_DbModel.FK_Tbl_Default_Tbl_User">
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+            <End Role="Tbl_Default" EntitySet="Tbl_Default" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Bill_Item" EntityType="DigoErp_DbModel.Tbl_Bill_Item" />
+          <EntitySet Name="Tbl_Customer" EntityType="DigoErp_DbModel.Tbl_Customer" />
+          <AssociationSet Name="FK_Tbl_Customer_Tbl_Branch" Association="DigoErp_DbModel.FK_Tbl_Customer_Tbl_Branch">
+            <End Role="Tbl_Branch" EntitySet="Tbl_Branch" />
+            <End Role="Tbl_Customer" EntitySet="Tbl_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Customer_Tbl_Currency" Association="DigoErp_DbModel.FK_Tbl_Customer_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Customer" EntitySet="Tbl_Customer" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Transaction" EntityType="DigoErp_DbModel.Tbl_Transaction" />
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Account" Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Account">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Category" Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Category">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Customer" Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Customer">
+            <End Role="Tbl_Customer" EntitySet="Tbl_Customer" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Vendor" Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Vendor">
+            <End Role="Tbl_Vendor" EntitySet="Tbl_Vendor" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Invoice" EntityType="DigoErp_DbModel.Tbl_Invoice" />
+          <AssociationSet Name="FK_Tbl_Invoice_Tbl_Category" Association="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Category">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Invoice" EntitySet="Tbl_Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Invoice_Tbl_Currency" Association="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Invoice" EntitySet="Tbl_Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Invoice_Tbl_Customer" Association="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Customer">
+            <End Role="Tbl_Customer" EntitySet="Tbl_Customer" />
+            <End Role="Tbl_Invoice" EntitySet="Tbl_Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_InvoiceItem_Tbl_Invoice" Association="DigoErp_DbModel.FK_Tbl_InvoiceItem_Tbl_Invoice">
+            <End Role="Tbl_Invoice" EntitySet="Tbl_Invoice" />
+            <End Role="Tbl_InvoiceItem" EntitySet="Tbl_InvoiceItem" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Bill" EntityType="DigoErp_DbModel.Tbl_Bill" />
+          <EntitySet Name="Tbl_Transfer" EntityType="DigoErp_DbModel.Tbl_Transfer" />
+          <AssociationSet Name="FK_Tbl_Transfers_Tbl_Account" Association="DigoErp_DbModel.FK_Tbl_Transfers_Tbl_Account">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Transfer" EntitySet="Tbl_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transfers_Tbl_Account1" Association="DigoErp_DbModel.FK_Tbl_Transfers_Tbl_Account1">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Transfer" EntitySet="Tbl_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Bill_Item_Tbl_Bill" Association="DigoErp_DbModel.FK_Tbl_Bill_Item_Tbl_Bill">
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+            <End Role="Tbl_Bill_Item" EntitySet="Tbl_Bill_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Bill_Tbl_Category" Association="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Category">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Bill_Tbl_Currency" Association="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Currency">
+            <End Role="Tbl_Currency" EntitySet="Tbl_Currency" />
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Bill_Tbl_Vendor" Association="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Vendor">
+            <End Role="Tbl_Vendor" EntitySet="Tbl_Vendor" />
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Transaction_Tbl_Bill" Association="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Bill">
+            <End Role="Tbl_Bill" EntitySet="Tbl_Bill" />
+            <End Role="Tbl_Transaction" EntitySet="Tbl_Transaction" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Reconciliation" EntityType="DigoErp_DbModel.Tbl_Reconciliation" />
+          <AssociationSet Name="FK_Tbl_Reconciliation_Tbl_Account" Association="DigoErp_DbModel.FK_Tbl_Reconciliation_Tbl_Account">
+            <End Role="Tbl_Account" EntitySet="Tbl_Account" />
+            <End Role="Tbl_Reconciliation" EntitySet="Tbl_Reconciliation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Reconciliation_Tbl_User" Association="DigoErp_DbModel.FK_Tbl_Reconciliation_Tbl_User">
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+            <End Role="Tbl_Reconciliation" EntitySet="Tbl_Reconciliation" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Reconciliation_Transaction" EntityType="DigoErp_DbModel.Tbl_Reconciliation_Transaction" />
+          <AssociationSet Name="FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation" Association="DigoErp_DbModel.FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation">
+            <End Role="Tbl_Reconciliation" EntitySet="Tbl_Reconciliation" />
+            <End Role="Tbl_Reconciliation_Transaction" EntitySet="Tbl_Reconciliation_Transaction" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Tbl_Branch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="TaxNumber" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Logo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_User" Relationship="DigoErp_DbModel.FK_Tbl_User_Tbl_Branch" FromRole="Tbl_Branch" ToRole="Tbl_User" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Customer" Relationship="DigoErp_DbModel.FK_Tbl_Customer_Tbl_Branch" FromRole="Tbl_Branch" ToRole="Tbl_Customer" />
+        </EntityType>
+        <EntityType Name="Tbl_Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_User" Relationship="DigoErp_DbModel.FK_Tbl_User_Tbl_Role" FromRole="Tbl_Role" ToRole="Tbl_User" />
+          <Property Name="Code" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tbl_User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BranchId" Type="Int32" />
+          <Property Name="RoleId" Type="Int32" />
+          <Property Name="Photo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Branch" Relationship="DigoErp_DbModel.FK_Tbl_User_Tbl_Branch" FromRole="Tbl_User" ToRole="Tbl_Branch" />
+          <NavigationProperty Name="Tbl_Role" Relationship="DigoErp_DbModel.FK_Tbl_User_Tbl_Role" FromRole="Tbl_User" ToRole="Tbl_Role" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ResetPasswordCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <Property Name="LandingPage" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Default" Relationship="DigoErp_DbModel.FK_Tbl_Default_Tbl_User" FromRole="Tbl_User" ToRole="Tbl_Default" />
+          <Property Name="IsEnabled" Type="Boolean" />
+          <NavigationProperty Name="Tbl_Reconciliation" Relationship="DigoErp_DbModel.FK_Tbl_Reconciliation_Tbl_User" FromRole="Tbl_User" ToRole="Tbl_Reconciliation" />
+        </EntityType>
+        <Association Name="FK_Tbl_User_Tbl_Branch">
+          <End Type="DigoErp_DbModel.Tbl_Branch" Role="Tbl_Branch" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_User" Role="Tbl_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Branch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_User">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_User_Tbl_Role">
+          <End Type="DigoErp_DbModel.Tbl_Role" Role="Tbl_Role" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_User" Role="Tbl_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_ItemUnit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="NameAr" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="NameEn" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Tbl_Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SalePrice" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PurchasePrice" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="IsEnabled" Type="Boolean" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <Property Name="CategoryId" Type="Int64" />
+          <Property Name="TaxId" Type="Int64" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Picture" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Tax" Relationship="DigoErp_DbModel.FK_Tbl_Item_Tbl_Tax" FromRole="Tbl_Item" ToRole="Tbl_Tax" />
+          <NavigationProperty Name="Tbl_Category" Relationship="DigoErp_DbModel.FK_Tbl_Item_Tbl_Category" FromRole="Tbl_Item" ToRole="Tbl_Category" />
+        </EntityType>
+        <EntityType Name="Tbl_Vendor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UnPaid" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="IsEnabled" Type="Boolean" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <Property Name="TaxNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CurrencyId" Type="Int64" />
+          <Property Name="Website" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Refrence" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Currency" Relationship="DigoErp_DbModel.FK_Tbl_Vendor_Tbl_Currency" FromRole="Tbl_Vendor" ToRole="Tbl_Currency" />
+          <NavigationProperty Name="Tbl_Transaction" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Vendor" FromRole="Tbl_Vendor" ToRole="Tbl_Transaction" />
+          <NavigationProperty Name="Tbl_Bill" Relationship="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Vendor" FromRole="Tbl_Vendor" ToRole="Tbl_Bill" />
+          <Property Name="AccountNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SadadNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tbl_Currency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Rate" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Vendor" Relationship="DigoErp_DbModel.FK_Tbl_Vendor_Tbl_Currency" FromRole="Tbl_Currency" ToRole="Tbl_Vendor" />
+          <NavigationProperty Name="Tbl_Account" Relationship="DigoErp_DbModel.FK_Tbl_Account_Tbl_Currency" FromRole="Tbl_Currency" ToRole="Tbl_Account" />
+          <Property Name="Precision" Type="Int32" />
+          <Property Name="Symbol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SymbolPosition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DecimalMark" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Thousands_Separator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Enabled" Type="Boolean" />
+          <Property Name="Default_Currency" Type="Boolean" />
+          <NavigationProperty Name="Tbl_Defaults" Relationship="DigoErp_DbModel.FK_Tbl_Default_Tbl_Currency" FromRole="Tbl_Currency" ToRole="Tbl_Default" />
+          <NavigationProperty Name="Tbl_Customer" Relationship="DigoErp_DbModel.FK_Tbl_Customer_Tbl_Currency" FromRole="Tbl_Currency" ToRole="Tbl_Customer" />
+          <NavigationProperty Name="Tbl_Invoice" Relationship="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Currency" FromRole="Tbl_Currency" ToRole="Tbl_Invoice" />
+          <NavigationProperty Name="Tbl_Bill" Relationship="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Currency" FromRole="Tbl_Currency" ToRole="Tbl_Bill" />
+        </EntityType>
+        <Association Name="FK_Tbl_Vendor_Tbl_Currency">
+          <End Type="DigoErp_DbModel.Tbl_Currency" Role="Tbl_Currency" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Vendor" Role="Tbl_Vendor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Vendor">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Tax">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Rate" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Tbl_Item" Relationship="DigoErp_DbModel.FK_Tbl_Item_Tbl_Tax" FromRole="Tbl_Tax" ToRole="Tbl_Item" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Enabled" Type="Boolean" />
+          <NavigationProperty Name="Tbl_Defaults" Relationship="DigoErp_DbModel.FK_Tbl_Default_Tbl_Tax" FromRole="Tbl_Tax" ToRole="Tbl_Default" />
+        </EntityType>
+        <Association Name="FK_Tbl_Item_Tbl_Tax">
+          <End Type="DigoErp_DbModel.Tbl_Tax" Role="Tbl_Tax" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Item" Role="Tbl_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Tax">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Item">
+              <PropertyRef Name="TaxId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Account">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CurrencyId" Type="Int64" />
+          <Property Name="OpeningBalance" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="BankName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BankPhone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BankAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultAccount" Type="Boolean" />
+          <Property Name="IsEnabled" Type="Boolean" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Currency" Relationship="DigoErp_DbModel.FK_Tbl_Account_Tbl_Currency" FromRole="Tbl_Account" ToRole="Tbl_Currency" />
+          <Property Name="AccountName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Defaults" Relationship="DigoErp_DbModel.FK_Tbl_Default_Tbl_Account" FromRole="Tbl_Account" ToRole="Tbl_Default" />
+          <Property Name="IBANNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Transaction" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Account" FromRole="Tbl_Account" ToRole="Tbl_Transaction" />
+          <NavigationProperty Name="Tbl_TransfersFrom" Relationship="DigoErp_DbModel.FK_Tbl_Transfers_Tbl_Account" FromRole="Tbl_Account" ToRole="Tbl_Transfer" />
+          <NavigationProperty Name="Tbl_TransfersTo" Relationship="DigoErp_DbModel.FK_Tbl_Transfers_Tbl_Account1" FromRole="Tbl_Account" ToRole="Tbl_Transfer" />
+          <NavigationProperty Name="Tbl_Reconciliation" Relationship="DigoErp_DbModel.FK_Tbl_Reconciliation_Tbl_Account" FromRole="Tbl_Account" ToRole="Tbl_Reconciliation" />
+        </EntityType>
+        <Association Name="FK_Tbl_Account_Tbl_Currency">
+          <End Type="DigoErp_DbModel.Tbl_Currency" Role="Tbl_Currency" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Account" Role="Tbl_Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Account">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Color" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Enabled" Type="Boolean" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Item" Relationship="DigoErp_DbModel.FK_Tbl_Item_Tbl_Category" FromRole="Tbl_Category" ToRole="Tbl_Item" />
+          <NavigationProperty Name="Tbl_Transaction" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Category" FromRole="Tbl_Category" ToRole="Tbl_Transaction" />
+          <NavigationProperty Name="Tbl_Invoice" Relationship="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Category" FromRole="Tbl_Category" ToRole="Tbl_Invoice" />
+          <NavigationProperty Name="Tbl_Bill" Relationship="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Category" FromRole="Tbl_Category" ToRole="Tbl_Bill" />
+        </EntityType>
+        <Association Name="FK_Tbl_Item_Tbl_Category">
+          <End Type="DigoErp_DbModel.Tbl_Category" Role="Tbl_Category" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Item" Role="Tbl_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Item">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_InvoiceItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int64" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Tax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Invoice" Relationship="DigoErp_DbModel.FK_Tbl_InvoiceItem_Tbl_Invoice" FromRole="Tbl_InvoiceItem" ToRole="Tbl_Invoice" />
+          <Property Name="ItemId" Type="Int64" />
+          <Property Name="TaxId" Type="Int64" />
+        </EntityType>
+        <EntityType Name="Tbl_Default">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountId" Type="Int64" />
+          <Property Name="CurrencyId" Type="Int64" />
+          <Property Name="TaxId" Type="Int64" />
+          <Property Name="PaymentMethod" Type="Int32" />
+          <Property Name="Language" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RecordsPerPage" Type="Int32" />
+          <NavigationProperty Name="Tbl_Account" Relationship="DigoErp_DbModel.FK_Tbl_Default_Tbl_Account" FromRole="Tbl_Default" ToRole="Tbl_Account" />
+          <NavigationProperty Name="Tbl_Currency" Relationship="DigoErp_DbModel.FK_Tbl_Default_Tbl_Currency" FromRole="Tbl_Default" ToRole="Tbl_Currency" />
+          <NavigationProperty Name="Tbl_Tax" Relationship="DigoErp_DbModel.FK_Tbl_Default_Tbl_Tax" FromRole="Tbl_Default" ToRole="Tbl_Tax" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <NavigationProperty Name="Tbl_User" Relationship="DigoErp_DbModel.FK_Tbl_Default_Tbl_User" FromRole="Tbl_Default" ToRole="Tbl_User" />
+          <Property Name="Logo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Tbl_Default_Tbl_Account">
+          <End Type="DigoErp_DbModel.Tbl_Account" Role="Tbl_Account" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Default" Role="Tbl_Default" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Default">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Default_Tbl_Currency">
+          <End Type="DigoErp_DbModel.Tbl_Currency" Role="Tbl_Currency" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Default" Role="Tbl_Default" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Default">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Default_Tbl_Tax">
+          <End Type="DigoErp_DbModel.Tbl_Tax" Role="Tbl_Tax" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Default" Role="Tbl_Default" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Tax">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Default">
+              <PropertyRef Name="TaxId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Default_Tbl_User">
+          <End Type="DigoErp_DbModel.Tbl_User" Role="Tbl_User" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Default" Role="Tbl_Default" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Default">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Bill_Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bill_Id" Type="Int64" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Tax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Bill" Relationship="DigoErp_DbModel.FK_Tbl_Bill_Item_Tbl_Bill" FromRole="Tbl_Bill_Item" ToRole="Tbl_Bill" />
+          <Property Name="ItemId" Type="Int64" />
+          <Property Name="TaxId" Type="Int64" />
+        </EntityType>
+        <EntityType Name="Tbl_Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaxNumber" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CurrencyId" Type="Int64" />
+          <Property Name="Website" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsEnabled" Type="Boolean" />
+          <Property Name="Refrence" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <Property Name="CanLogin" Type="Boolean" />
+          <Property Name="BranchId" Type="Int32" />
+          <NavigationProperty Name="Tbl_Branch" Relationship="DigoErp_DbModel.FK_Tbl_Customer_Tbl_Branch" FromRole="Tbl_Customer" ToRole="Tbl_Branch" />
+          <NavigationProperty Name="Tbl_Currency" Relationship="DigoErp_DbModel.FK_Tbl_Customer_Tbl_Currency" FromRole="Tbl_Customer" ToRole="Tbl_Currency" />
+          <NavigationProperty Name="Tbl_Transaction" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Customer" FromRole="Tbl_Customer" ToRole="Tbl_Transaction" />
+          <NavigationProperty Name="Tbl_Invoice" Relationship="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Customer" FromRole="Tbl_Customer" ToRole="Tbl_Invoice" />
+          <Property Name="AccountNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SadadNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Tbl_Customer_Tbl_Branch">
+          <End Type="DigoErp_DbModel.Tbl_Branch" Role="Tbl_Branch" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Customer" Role="Tbl_Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Branch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Customer">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Customer_Tbl_Currency">
+          <End Type="DigoErp_DbModel.Tbl_Currency" Role="Tbl_Currency" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Customer" Role="Tbl_Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Customer">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="AccountId" Type="Int64" />
+          <Property Name="CustomerId" Type="Int64" />
+          <Property Name="VendorId" Type="Int64" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryId" Type="Int64" />
+          <Property Name="Recurring" Type="Int32" />
+          <Property Name="PaymentMethod" Type="Int32" />
+          <Property Name="Reference" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Attachment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Invoice" Type="Int64" />
+          <Property Name="BillId" Type="Int64" />
+          <Property Name="TransactionType" Type="Int32" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Account" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Account" FromRole="Tbl_Transaction" ToRole="Tbl_Account" />
+          <NavigationProperty Name="Tbl_Category" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Category" FromRole="Tbl_Transaction" ToRole="Tbl_Category" />
+          <NavigationProperty Name="Tbl_Customer" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Customer" FromRole="Tbl_Transaction" ToRole="Tbl_Customer" />
+          <NavigationProperty Name="Tbl_Vendor" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Vendor" FromRole="Tbl_Transaction" ToRole="Tbl_Vendor" />
+          <NavigationProperty Name="Tbl_Bill" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Bill" FromRole="Tbl_Transaction" ToRole="Tbl_Bill" />
+        </EntityType>
+        <Association Name="FK_Tbl_Transaction_Tbl_Account">
+          <End Type="DigoErp_DbModel.Tbl_Account" Role="Tbl_Account" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Transaction" Role="Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Category">
+          <End Type="DigoErp_DbModel.Tbl_Category" Role="Tbl_Category" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Transaction" Role="Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Customer">
+          <End Type="DigoErp_DbModel.Tbl_Customer" Role="Tbl_Customer" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Transaction" Role="Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Vendor">
+          <End Type="DigoErp_DbModel.Tbl_Vendor" Role="Tbl_Vendor" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Transaction" Role="Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Vendor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="VendorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Invoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" />
+          <Property Name="CurrencyId" Type="Int64" />
+          <Property Name="InvoiceDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DueDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Footer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryId" Type="Int64" />
+          <Property Name="Recurring" Type="Int32" />
+          <Property Name="Attachment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <Property Name="SubTotal" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Tax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GrandTotal" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="String" FixedLength="false" MaxLength="20" Unicode="true" />
+          <NavigationProperty Name="Tbl_Category" Relationship="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Category" FromRole="Tbl_Invoice" ToRole="Tbl_Category" />
+          <NavigationProperty Name="Tbl_Currency" Relationship="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Currency" FromRole="Tbl_Invoice" ToRole="Tbl_Currency" />
+          <NavigationProperty Name="Tbl_Customer" Relationship="DigoErp_DbModel.FK_Tbl_Invoice_Tbl_Customer" FromRole="Tbl_Invoice" ToRole="Tbl_Customer" />
+          <NavigationProperty Name="Tbl_InvoiceItems" Relationship="DigoErp_DbModel.FK_Tbl_InvoiceItem_Tbl_Invoice" FromRole="Tbl_Invoice" ToRole="Tbl_InvoiceItem" />
+          <Property Name="Discount_Percentage" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <Association Name="FK_Tbl_Invoice_Tbl_Category">
+          <End Type="DigoErp_DbModel.Tbl_Category" Role="Tbl_Category" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Invoice" Role="Tbl_Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Invoice">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Invoice_Tbl_Currency">
+          <End Type="DigoErp_DbModel.Tbl_Currency" Role="Tbl_Currency" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Invoice" Role="Tbl_Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Invoice">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Invoice_Tbl_Customer">
+          <End Type="DigoErp_DbModel.Tbl_Customer" Role="Tbl_Customer" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Invoice" Role="Tbl_Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Invoice">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_InvoiceItem_Tbl_Invoice">
+          <End Type="DigoErp_DbModel.Tbl_Invoice" Role="Tbl_Invoice" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_InvoiceItem" Role="Tbl_InvoiceItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Invoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_InvoiceItem">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Bill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VendorId" Type="Int64" />
+          <Property Name="CurrencyId" Type="Int64" />
+          <Property Name="BillDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DueDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Number" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="String" Unicode="true" MaxLength="20" FixedLength="false" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryId" Type="Int64" />
+          <Property Name="Recurring" Type="Int32" />
+          <Property Name="Attachment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <Property Name="SubTotal" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Tax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GrandTotal" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Tbl_Bill_Items" Relationship="DigoErp_DbModel.FK_Tbl_Bill_Item_Tbl_Bill" FromRole="Tbl_Bill" ToRole="Tbl_Bill_Item" />
+          <NavigationProperty Name="Tbl_Category" Relationship="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Category" FromRole="Tbl_Bill" ToRole="Tbl_Category" />
+          <NavigationProperty Name="Tbl_Currency" Relationship="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Currency" FromRole="Tbl_Bill" ToRole="Tbl_Currency" />
+          <NavigationProperty Name="Tbl_Vendor" Relationship="DigoErp_DbModel.FK_Tbl_Bill_Tbl_Vendor" FromRole="Tbl_Bill" ToRole="Tbl_Vendor" />
+          <NavigationProperty Name="Tbl_Transaction" Relationship="DigoErp_DbModel.FK_Tbl_Transaction_Tbl_Bill" FromRole="Tbl_Bill" ToRole="Tbl_Transaction" />
+          <Property Name="Discount_Percentage" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Tbl_Transfer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromAccount" Type="Int64" />
+          <Property Name="ToAccount" Type="Int64" />
+          <Property Name="Amount" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentMethod" Type="Int32" />
+          <Property Name="Reference" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_AccountFrom" Relationship="DigoErp_DbModel.FK_Tbl_Transfers_Tbl_Account" FromRole="Tbl_Transfer" ToRole="Tbl_Account" />
+          <NavigationProperty Name="Tbl_AccountTo" Relationship="DigoErp_DbModel.FK_Tbl_Transfers_Tbl_Account1" FromRole="Tbl_Transfer" ToRole="Tbl_Account" />
+        </EntityType>
+        <Association Name="FK_Tbl_Transfers_Tbl_Account">
+          <End Type="DigoErp_DbModel.Tbl_Account" Role="Tbl_Account" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Transfer" Role="Tbl_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transfer">
+              <PropertyRef Name="FromAccount" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transfers_Tbl_Account1">
+          <End Type="DigoErp_DbModel.Tbl_Account" Role="Tbl_Account" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Transfer" Role="Tbl_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transfer">
+              <PropertyRef Name="ToAccount" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Bill_Item_Tbl_Bill">
+          <End Type="DigoErp_DbModel.Tbl_Bill" Role="Tbl_Bill" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Bill_Item" Role="Tbl_Bill_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Bill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Bill_Item">
+              <PropertyRef Name="Bill_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Bill_Tbl_Category">
+          <End Type="DigoErp_DbModel.Tbl_Category" Role="Tbl_Category" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Bill" Role="Tbl_Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Bill">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Bill_Tbl_Currency">
+          <End Type="DigoErp_DbModel.Tbl_Currency" Role="Tbl_Currency" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Bill" Role="Tbl_Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Bill">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Bill_Tbl_Vendor">
+          <End Type="DigoErp_DbModel.Tbl_Vendor" Role="Tbl_Vendor" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Bill" Role="Tbl_Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Vendor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Bill">
+              <PropertyRef Name="VendorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Transaction_Tbl_Bill">
+          <End Type="DigoErp_DbModel.Tbl_Bill" Role="Tbl_Bill" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Transaction" Role="Tbl_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Bill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Transaction">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Reconciliation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountId" Type="Int64" />
+          <Property Name="StartDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EndDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ClosingBalance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Created_By" Type="Int64" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Account" Relationship="DigoErp_DbModel.FK_Tbl_Reconciliation_Tbl_Account" FromRole="Tbl_Reconciliation" ToRole="Tbl_Account" />
+          <NavigationProperty Name="Tbl_User" Relationship="DigoErp_DbModel.FK_Tbl_Reconciliation_Tbl_User" FromRole="Tbl_Reconciliation" ToRole="Tbl_User" />
+          <NavigationProperty Name="Tbl_Reconciliation_Transactions" Relationship="DigoErp_DbModel.FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation" FromRole="Tbl_Reconciliation" ToRole="Tbl_Reconciliation_Transaction" />
+        </EntityType>
+        <Association Name="FK_Tbl_Reconciliation_Tbl_Account">
+          <End Type="DigoErp_DbModel.Tbl_Account" Role="Tbl_Account" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Reconciliation" Role="Tbl_Reconciliation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Reconciliation">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Reconciliation_Tbl_User">
+          <End Type="DigoErp_DbModel.Tbl_User" Role="Tbl_User" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Reconciliation" Role="Tbl_Reconciliation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Reconciliation">
+              <PropertyRef Name="Created_By" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Reconciliation_Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReconciliationId" Type="Int64" />
+          <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Deposit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Withdrawal" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsClear" Type="Boolean" />
+          <NavigationProperty Name="Tbl_Reconciliation" Relationship="DigoErp_DbModel.FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation" FromRole="Tbl_Reconciliation_Transaction" ToRole="Tbl_Reconciliation" />
+        </EntityType>
+        <Association Name="FK_Tbl_Reconciliation_Transaction_Tbl_Reconciliation">
+          <End Type="DigoErp_DbModel.Tbl_Reconciliation" Role="Tbl_Reconciliation" Multiplicity="0..1" />
+          <End Type="DigoErp_DbModel.Tbl_Reconciliation_Transaction" Role="Tbl_Reconciliation_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Reconciliation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Reconciliation_Transaction">
+              <PropertyRef Name="ReconciliationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DigoErp_DbModelStoreContainer" CdmEntityContainer="DigoErp_Db">
+          <EntitySetMapping Name="Tbl_Branch">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Branch">
+              <MappingFragment StoreEntitySet="Tbl_Branch">
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Role">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Role">
+              <MappingFragment StoreEntitySet="Tbl_Role">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_User">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_User">
+              <MappingFragment StoreEntitySet="Tbl_User">
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="LandingPage" ColumnName="LandingPage" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="ResetPasswordCode" ColumnName="ResetPasswordCode" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_ItemUnit">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_ItemUnit">
+              <MappingFragment StoreEntitySet="Tbl_ItemUnit">
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Item">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Item">
+              <MappingFragment StoreEntitySet="Tbl_Item">
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TaxId" ColumnName="TaxId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Vendor">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Vendor">
+              <MappingFragment StoreEntitySet="Tbl_Vendor">
+                <ScalarProperty Name="SadadNumber" ColumnName="SadadNumber" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="Refrence" ColumnName="Refrence" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="UnPaid" ColumnName="UnPaid" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Currency">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Currency">
+              <MappingFragment StoreEntitySet="Tbl_Currency">
+                <ScalarProperty Name="Default_Currency" ColumnName="Default_Currency" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Thousands_Separator" ColumnName="Thousands_Separator" />
+                <ScalarProperty Name="DecimalMark" ColumnName="DecimalMark" />
+                <ScalarProperty Name="SymbolPosition" ColumnName="SymbolPosition" />
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+                <ScalarProperty Name="Precision" ColumnName="Precision" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Tax">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Tax">
+              <MappingFragment StoreEntitySet="Tbl_Tax">
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Account">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Account">
+              <MappingFragment StoreEntitySet="Tbl_Account">
+                <ScalarProperty Name="IBANNumber" ColumnName="IBANNumber" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="DefaultAccount" ColumnName="DefaultAccount" />
+                <ScalarProperty Name="BankAddress" ColumnName="BankAddress" />
+                <ScalarProperty Name="BankPhone" ColumnName="BankPhone" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="OpeningBalance" ColumnName="OpeningBalance" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Category">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Category">
+              <MappingFragment StoreEntitySet="Tbl_Category">
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_InvoiceItem">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_InvoiceItem">
+              <MappingFragment StoreEntitySet="Tbl_InvoiceItem">
+                <ScalarProperty Name="TaxId" ColumnName="TaxId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Default">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Default">
+              <MappingFragment StoreEntitySet="Tbl_Default">
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="RecordsPerPage" ColumnName="RecordsPerPage" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="TaxId" ColumnName="TaxId" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Bill_Item">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Bill_Item">
+              <MappingFragment StoreEntitySet="Tbl_Bill_Item">
+                <ScalarProperty Name="TaxId" ColumnName="TaxId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Bill_Id" ColumnName="Bill_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Customer">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Customer">
+              <MappingFragment StoreEntitySet="Tbl_Customer">
+                <ScalarProperty Name="SadadNumber" ColumnName="SadadNumber" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="CanLogin" ColumnName="CanLogin" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Refrence" ColumnName="Refrence" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Transaction">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Transaction">
+              <MappingFragment StoreEntitySet="Tbl_Transaction">
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="Invoice" ColumnName="Invoice" />
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="Recurring" ColumnName="Recurring" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Invoice">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Invoice">
+              <MappingFragment StoreEntitySet="Tbl_Invoice">
+                <ScalarProperty Name="Discount_Percentage" ColumnName="Discount_Percentage" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="Recurring" ColumnName="Recurring" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Footer" ColumnName="Footer" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Bill">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Bill">
+              <MappingFragment StoreEntitySet="Tbl_Bill">
+                <ScalarProperty Name="Discount_Percentage" ColumnName="Discount_Percentage" />
+                <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="Recurring" ColumnName="Recurring" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="BillDate" ColumnName="BillDate" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Transfer">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Transfer">
+              <MappingFragment StoreEntitySet="Tbl_Transfer">
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ToAccount" ColumnName="ToAccount" />
+                <ScalarProperty Name="FromAccount" ColumnName="FromAccount" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Reconciliation">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Reconciliation">
+              <MappingFragment StoreEntitySet="Tbl_Reconciliation">
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ClosingBalance" ColumnName="ClosingBalance" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Reconciliation_Transaction">
+            <EntityTypeMapping TypeName="DigoErp_DbModel.Tbl_Reconciliation_Transaction">
+              <MappingFragment StoreEntitySet="Tbl_Reconciliation_Transaction">
+                <ScalarProperty Name="IsClear" ColumnName="IsClear" />
+                <ScalarProperty Name="Withdrawal" ColumnName="Withdrawal" />
+                <ScalarProperty Name="Deposit" ColumnName="Deposit" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ReconciliationId" ColumnName="ReconciliationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
